@@ -16,9 +16,14 @@
             <img src="<?= $host_name ?>/public/img/icon/heading_logo.png" height="25px" alt="">
         </div>  
         <div class="user">
-            <img src="<?= $host_name ?>/public/img/image/user.png" width="120px" height="120px" alt="">
-            <p class="user-title">job title</p>
-            <p class="user-id">employee ID</p>
+            <!-- <img src="<?= $host_name ?>/public/img/image/user.png" width="120px" height="120px" alt=""> -->
+            <img style="object-fit: cover; aline-item: center" src="<?= $_SESSION['avatar'] ?>" width="120px" height="120px" alt="">
+            <p class="user-title">
+                <?= $_SESSION['role'] ?>
+            </p>
+            <p class="user-id">
+                <?= $_SESSION['id'] ?>
+            </p>
         </div>
         <div class="main-func">
             <a href="<?= $host_name ?>/home/main_uc"><i class="fa-solid fa-house"></i>dash board</a>

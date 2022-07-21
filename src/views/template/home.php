@@ -19,7 +19,7 @@
         <main>
             <div class="container">
             <div class="login-form">
-                <form action="/" method="post">
+                <form action="<?= $host_name ?>/home/sign_in" method="post">
                     <h1>Đăng nhập vào website</h1>
                     <div class="message"></div>
                     <div class="input-box">
