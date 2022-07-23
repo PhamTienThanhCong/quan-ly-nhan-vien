@@ -8,6 +8,49 @@ class ot_requestModel extends ConnectDB{
         return $data;
     }
 
+    // Tạo 1 bản ghi ot request mới
+    public function createOT($EMPLOYEE_ID, $MANAGER_ID, $REASON, $UPDATE_DATE, $STATUS, $MANAGER_COMMENT, $START_DATE, $ESTIMATED_HOURS, $END_DATE, $UNSUBMIT_REASON, $NOTIFICATION_FLAG){
+        $sql = "INSERT INTO `request ot`(`EMPLOYEE_ID`, `MANAGER_ID`, `REASON`, `UPDATE_DATE`, `STATUS`, `MANAGER_COMMENT`, `START_DATE`, `ESTIMATED_HOURS`, `END_DATE`, `UNSUBMIT_REASON`, `NOTIFICATION_FLAG`) VALUES ('$EMPLOYEE_ID', '$MANAGER_ID', '$REASON', '$UPDATE_DATE', '$STATUS', '$MANAGER_COMMENT', '$START_DATE', '$ESTIMATED_HOURS', '$END_DATE', '$UNSUBMIT_REASON', '$NOTIFICATION_FLAG')";
+        mysqli_query($this->connection, $sql);
+        
+        if ($this->connection->error != ""){
+            return 0;
+        }else{
+            $sql = "SELECT `ROT_ID` FROM `request ot` WHERE `EMPLOYEE_ID` = '$EMPLOYEE_ID' AND `MANAGER_ID` = '$MANAGER_ID' ORDER BY `ROT_ID` DESC limit 1";
+            $data = mysqli_query($this->connection, $sql);
+            $data = mysqli_fetch_array($data)['ROT_ID'];
+            return $data;
+        }
+    }
+
+    // Canceled request ot
+    public function Canceled_request_ot($id,$EMPLOYEE_ID, $UNSUBMIT_REASON, $status){
+        $sql = "SELECT COUNT(*) AS `number` FROM `request ot` WHERE `ROT_ID` = '$id' AND `EMPLOYEE_ID` = '$EMPLOYEE_ID'";
+        $data = mysqli_query($this->connection, $sql);
+        $data = mysqli_fetch_array($data)['number'];
+        if ($data == 0){
+            return false;
+        }else{
+            $sql = "UPDATE `request ot` SET `UNSUBMIT_REASON` = '$UNSUBMIT_REASON' , `STATUS` = '$status' WHERE `ROT_ID` = '$id' AND `EMPLOYEE_ID` = '$EMPLOYEE_ID'";
+            mysqli_query($this->connection, $sql);
+            return true;
+        }
+    }
+
+    // tạo nhiểu bảng ghi ot request detail
+    public function createOtDetail($ROT_ID, $data = []){
+        foreach($data as $d){
+            $DATE   =   $d['DATE'];
+            $HOUR   =   $d['HOUR'];
+            $sql = "INSERT INTO `request ot detail`(`ROT_ID`, `DATE`, `HOUR`) VALUES ('$ROT_ID', '$DATE', '$HOUR')";
+            mysqli_query($this->connection, $sql);
+            if ($this->connection->error != ""){
+                return false;
+            }
+        }
+        return true;
+    }
+
     // Xem một thông tin OT Request bất kỳ
     public function getOneRequestOt($ROT_ID){
         $sql = "SELECT * FROM `request ot` WHERE `ROT_ID` = '$ROT_ID'";

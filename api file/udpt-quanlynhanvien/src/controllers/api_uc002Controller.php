@@ -1,5 +1,8 @@
 <?php
     class api_uc002Controller extends Controllers {
+        public function index() {
+
+        }
         public function data_export($status, $message, $messageDetail, $data, $success) {
             $arr = [
                 "status"        => $status, 
@@ -10,18 +13,72 @@
             ];
             return json_encode($arr);
         }
-        public function index() {
+        // API 1: Thêm một thông tin request OT
+        public function create_ot() {
+            $summary            = "Create New Request OT";
+            $EMPLOYEE_ID        = 15;
+            $MANAGER_ID         = 6;
+            $REASON             = "Need OT to earn more money";
+            $UPDATE_DATE        = "2022-07-18 23:00:00";
+            $STATUS             = "Draft";
+            $MANAGER_COMMENT    = null;
+            $START_DATE         = "2022-08-01";
+            $ESTIMATED_HOURS    = 8;
+            $END_DATE           = "2022-08-02";
+            $UNSUBMIT_REASON    = null;
+            $NOTIFICATION_FLAG  = true;
+
+            $OTRequestDetails = [
+                [
+                    "DATE"      => "2022-08-01",
+                    "HOUR"      => 4
+                ],
+                [
+                    "DATE"      => "2022-08-02",
+                    "HOUR"      => 4
+                ]
+            ];
+            
+            $model  = $this->model('ot_requestModel');
+
+            $ROT_ID = $model->createOT($EMPLOYEE_ID, $MANAGER_ID, $REASON, $UPDATE_DATE, $STATUS, $MANAGER_COMMENT, $START_DATE, $ESTIMATED_HOURS, $END_DATE, $UNSUBMIT_REASON, $NOTIFICATION_FLAG);
+            
+            if ($ROT_ID != 0){
+                if ($model->createOtDetail($ROT_ID, $OTRequestDetails)){
+                    echo $this->data_export(200,"OT Request Created Successfully", $summary, null, true);
+                }else{
+                    echo $this->data_export(400,"Missing Required Information", $summary, null, false);
+                }
+            }else{
+                echo $this->data_export(400,"Missing Required Information", $summary, null, false);
+            }
+        }
+        
+        // API 2: Sửa một thông tin request OT Canceled
+        public function Canceled_request_ot($data = []){
+            $model   = $this->model('ot_requestModel');
+            $summary = "Unsubmit Employee’s Request OT Information";
+
+            $EMPLOYEE_ID        = 15;
+            // $UNSUBMIT_REASON    = $_POST['UNSUBMIT_REASON'];
+            $UNSUBMIT_REASON    = "em có bầu rồi";
+            $STATUS             = "Canceled";
+
+            if (isset($data[0])){
+                $id = $data[0];
+            }else{
+                echo $this->data_export(400,"Missing Required Information", $summary, null, false);
+                exit();
+            }
+
+            if ($model->Canceled_request_ot($id,$EMPLOYEE_ID, $UNSUBMIT_REASON, $STATUS)){
+                echo $this->data_export(200,"Unsubmit Employee’s OT Information Successfully", $summary, null, true);
+            }else{
+                echo $this->data_export(405,"Unable to update Employee’s request OT with id $id", $summary, null, false);
+            }
 
         }
-        public function create_ot() {
-            
-        }
-        public function un_create_ot() {
-            
-        }
-        public function edit_ot() {
-            
-        }
+
         // API 5: Xem danh sách các thông tin chi tiết trong 1 request OT bất kỳ (có phân trang)
         public function ot_request_details($data = []) {
             $summary = "Get Employee’s Request OT Information Detail Of Specified Request OT Sort By DATE DESC AND PAGINATE";
