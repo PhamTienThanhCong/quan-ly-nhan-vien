@@ -8,6 +8,13 @@ class ot_requestModel extends ConnectDB{
         return $data;
     }
 
+    public function check_isset($table, $column1, $value1, $column2, $value2){
+        $sql = "SELECT COUNT(*) AS `number` FROM `$table` WHERE `$column1` = '$value1' AND `$column2` = '$value2'";
+        $data = mysqli_query($this->connection, $sql);
+        $data = mysqli_fetch_array($data)['number'];
+        return $data;
+    }
+
     // Tạo 1 bản ghi ot request mới
     public function createOT($EMPLOYEE_ID, $MANAGER_ID, $REASON, $UPDATE_DATE, $STATUS, $MANAGER_COMMENT, $START_DATE, $ESTIMATED_HOURS, $END_DATE, $UNSUBMIT_REASON, $NOTIFICATION_FLAG){
         $sql = "INSERT INTO `request ot`(`EMPLOYEE_ID`, `MANAGER_ID`, `REASON`, `UPDATE_DATE`, `STATUS`, `MANAGER_COMMENT`, `START_DATE`, `ESTIMATED_HOURS`, `END_DATE`, `UNSUBMIT_REASON`, `NOTIFICATION_FLAG`) VALUES ('$EMPLOYEE_ID', '$MANAGER_ID', '$REASON', '$UPDATE_DATE', '$STATUS', '$MANAGER_COMMENT', '$START_DATE', '$ESTIMATED_HOURS', '$END_DATE', '$UNSUBMIT_REASON', '$NOTIFICATION_FLAG')";
@@ -24,14 +31,45 @@ class ot_requestModel extends ConnectDB{
     }
 
     // Canceled request ot
-    public function Canceled_request_ot($id,$EMPLOYEE_ID, $UNSUBMIT_REASON, $status){
-        $sql = "SELECT COUNT(*) AS `number` FROM `request ot` WHERE `ROT_ID` = '$id' AND `EMPLOYEE_ID` = '$EMPLOYEE_ID'";
-        $data = mysqli_query($this->connection, $sql);
-        $data = mysqli_fetch_array($data)['number'];
-        if ($data == 0){
+    public function Canceled_request_ot($id,$EMPLOYEE_ID, $UNSUBMIT_REASON, $status){        
+        if ($this->check_isset('request ot','ROT_ID',$id,'EMPLOYEE_ID',$EMPLOYEE_ID) == 0){
             return false;
         }else{
             $sql = "UPDATE `request ot` SET `UNSUBMIT_REASON` = '$UNSUBMIT_REASON' , `STATUS` = '$status' WHERE `ROT_ID` = '$id' AND `EMPLOYEE_ID` = '$EMPLOYEE_ID'";
+            mysqli_query($this->connection, $sql);
+            return true;
+        }
+    }
+
+    // edit request ot_request
+    public function edit_request_ot($id, $EMPLOYEE_ID, $MANAGER_ID, $REASON, $UPDATE_DATE, $STATUS, $MANAGER_COMMENT, $START_DATE, $ESTIMATED_HOURS, $END_DATE, $UNSUBMIT_REASON, $NOTIFICATION_FLAG){
+        if ($this->check_isset('request ot','ROT_ID',$id,'EMPLOYEE_ID',$EMPLOYEE_ID) == 0){
+            return false;
+        }else{
+            $sql = "UPDATE `request ot` SET `REASON`='$REASON',`UPDATE_DATE`='$UPDATE_DATE',`STATUS`='$STATUS',`MANAGER_COMMENT`='$MANAGER_COMMENT',`START_DATE`='$START_DATE',`ESTIMATED_HOURS`='$ESTIMATED_HOURS',`END_DATE`='$END_DATE',`UNSUBMIT_REASON`='$UNSUBMIT_REASON',`NOTIFICATION_FLAG`='$NOTIFICATION_FLAG' WHERE `ROT_ID` = '$id'";
+            mysqli_query($this->connection, $sql);
+            return true;
+        }
+    }
+
+    // delete request ot detail
+    public function delete_request_ot_detail($id){
+        if ($this->check_isset('request ot detail','ROTDETAIL_ID',$id,'ROTDETAIL_ID',$id) == 0){
+            return false;
+        }else{
+            $sql = "DELETE FROM `request ot detail` WHERE `ROTDETAIL_ID` = '$id'";
+            mysqli_query($this->connection, $sql);
+            return true;
+        }
+    }
+
+    // delete an request ot
+    public function delete_request_ot($id){
+        if ($this->check_isset('request ot','ROT_ID',$id,'ROT_ID',$id) == 0){
+            return false;
+        }else{
+            $this->delete_request_ot_detail($id);
+            $sql = "DELETE FROM `request ot` WHERE `ROT_ID` = '$id'";
             mysqli_query($this->connection, $sql);
             return true;
         }

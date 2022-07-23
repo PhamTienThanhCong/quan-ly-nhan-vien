@@ -1,7 +1,7 @@
 <?php
     class api_uc002Controller extends Controllers {
         public function index() {
-
+            echo $this->data_export(404,"Request OT Not Found", null, null, false);
         }
         public function data_export($status, $message, $messageDetail, $data, $success) {
             $arr = [
@@ -75,6 +75,90 @@
                 echo $this->data_export(200,"Unsubmit Employee’s OT Information Successfully", $summary, null, true);
             }else{
                 echo $this->data_export(405,"Unable to update Employee’s request OT with id $id", $summary, null, false);
+            }
+        }
+
+        // API 2: Sửa một thông tin request OT 
+        public function edit_request_ot($data = []){
+            $model   = $this->model('ot_requestModel');
+            $summary = "Unsubmit Employee’s Request OT Information";
+
+            if (isset($data[0])){
+                $id = $data[0];
+            }else{
+                echo $this->data_export(400,"Missing Required Information", $summary, null, false);
+                exit();
+            }
+
+            $EMPLOYEE_ID        = 15;
+            $MANAGER_ID         = 6;
+            $REASON             = "Need OT to earn more money";
+            $UPDATE_DATE        = "2022-07-18 23:00:00";
+            $STATUS             = "Draft";
+            $MANAGER_COMMENT    = null;
+            $START_DATE         = "2022-08-01";
+            $ESTIMATED_HOURS    = 8;
+            $END_DATE           = "2022-08-02";
+            $UNSUBMIT_REASON    = null;
+            $NOTIFICATION_FLAG  = true;
+
+            $OTRequestDetails = [
+                [
+                    "DATE"      => "2022-08-01",
+                    "HOUR"      => 3
+                ],
+                [
+                    "DATE"      => "2022-08-02",
+                    "HOUR"      => 3
+                ]
+            ];
+
+            $result_check = $model->edit_request_ot($id, $EMPLOYEE_ID, $MANAGER_ID, $REASON, $UPDATE_DATE, $STATUS, $MANAGER_COMMENT, $START_DATE, $ESTIMATED_HOURS, $END_DATE, $UNSUBMIT_REASON, $NOTIFICATION_FLAG);
+            if ($result_check){
+                $model->delete_request_ot_detail($id);
+                $model->createOtDetail($id, $OTRequestDetails);
+                echo $this->data_export(200,"Updated Employee’s OT Information Successfully", $summary, null, true);
+            }else{
+                echo $this->data_export(405,"Unable to update Employee’s request OT with id $id", $summary, null, false);
+            }
+
+        }
+
+        // API 3: Xóa một thông tin request OT
+        public function destroy_request_ot($data = []){
+            $model   = $this->model('ot_requestModel');
+            $summary = "Delete An Employee’s Request OT";
+
+            if (isset($data[0])){
+                $id = $data[0];
+            }else{
+                echo $this->data_export(400,"Missing Required Information", $summary, null, false);
+                exit();
+            }
+
+            if ($model->delete_request_ot($id)){
+                echo $this->data_export(400,"An OT Request Of Employee Has Been Delete Successfully", $summary, null, true);
+            }else{
+                echo $this->data_export(404,"Employee’s OT Request Not Found", $summary, null, false);
+            }
+
+        }
+
+        // API 4: Xóa một thông tin chi tiết trong 1 request OT bất kỳ
+        public function destroy_request_ot_detail($data = []){
+            $model   = $this->model('ot_requestModel');
+            $summary = "Delete The Employee’s Specified Request OT Information Detail Of Specified Request OT";
+            if (sizeof($data)){
+                $id = $data[0];
+            }else{
+                echo $this->data_export(400,"Missing Required Information", $summary, null, false);
+                exit();
+            }
+
+            if ($model->delete_request_ot_detail($id)){
+                echo $this->data_export(200,"Delete the OT Request Detail Successfully!", $summary, null, true);
+            }else{
+                echo $this->data_export(404,"Request OT Detail Not Found", $summary, null, false);
             }
 
         }
