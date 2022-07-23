@@ -78,4 +78,24 @@ class ot_requestModel extends ConnectDB{
         }
         return $ot_requests;
     }
+
+    public function get_all_ot_request_details($ROT_ID, $limit, $offset, $order_column, $sort_by){
+        $sql = "SELECT * FROM `request ot detail` WHERE `ROT_ID` = '$ROT_ID' ORDER BY `$order_column` $sort_by LIMIT $limit OFFSET $offset";
+        $data = mysqli_query($this->connection, $sql);
+        $ot_request_detail = [];
+        
+        if ($this->connection->error != ""){
+            return [];
+        }
+        
+        foreach($data as $index=>$d){
+            $ot_request_detail[$index] = [
+                "ROTDETAIL_ID " => $d["ROTDETAIL_ID"],
+                "ROT_ID"        => $d["ROT_ID"],
+                "DATE"          => $d["DATE"],
+                "HOUR"          => $d["HOUR"],
+            ];
+        }
+        return $ot_request_detail;
+    }
 }
