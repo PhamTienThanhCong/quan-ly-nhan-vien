@@ -1,8 +1,8 @@
 <?php 
 class ot_requestModel extends ConnectDB{
     // Lấy tổng số bản gi;
-    public function count_data($table){
-        $sql = "SELECT COUNT(*) AS `number` FROM `$table`";
+    public function count_data($table, $add = ""){
+        $sql = "SELECT COUNT(*) AS `number` FROM `$table` $add";
         $data = mysqli_query($this->connection, $sql);
         $data = mysqli_fetch_array($data)['number'];
         return $data;
@@ -133,8 +133,9 @@ class ot_requestModel extends ConnectDB{
     }
 
     // Xem nhieu thông tin OT Request bất kỳ
-    public function get_all_information_request($limit, $offset, $order_column, $sort_by){
-        $sql = "SELECT * FROM `request ot` ORDER BY `$order_column` $sort_by LIMIT $limit OFFSET $offset";
+    public function get_all_information_request($type, $ID, $limit, $offset, $order_column, $sort_by){
+        $sql = "SELECT * FROM `request ot` WHERE `$type` = '$ID'
+        ORDER BY `$order_column` $sort_by LIMIT $limit OFFSET $offset";
         $datas = mysqli_query($this->connection, $sql);
         
         if ($this->connection->error != ""){

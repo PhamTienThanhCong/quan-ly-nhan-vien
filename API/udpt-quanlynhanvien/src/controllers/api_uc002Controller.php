@@ -220,7 +220,7 @@
         // http://localhost/udpt-quanlynhanvien/api_uc002/ot_requests&limit=5&offset=2&sort_by=-create_date
         public function ot_requests() {
             $summary = "Get All Employee’s Request OT Information Sort By CREATE_DATE DESC AND PAGINATE";
-            $limit = 2;
+            $limit = 10;
             $offset = 0;
             $order_column = "CREATE_DATE";
             $sort_by = "asc";
@@ -238,13 +238,23 @@
                 }
                 $order_column = substr($order_column, 1);
             }
+            if (isset($_GET['EMPLOYEE_ID'])){
+                $type = "EMPLOYEE_ID";
+                $ID = $_GET['EMPLOYEE_ID'];
+            }else if (isset($_GET['MANAGER_ID'])){
+                $type = "MANAGER_ID";
+                $ID = $_GET['MANAGER_ID'];
+            }else{
+                echo $this->data_export(404,"Request OT Not Found", $summary, null, false);
+                exit();
+            }
 
             $model        = $this->model('ot_requestModel');
-            $ot_requests  = $model->get_all_information_request($limit, $offset, $order_column, $sort_by);
+            $ot_requests  = $model->get_all_information_request($type, $ID, $limit, $offset, $order_column, $sort_by);
 
             $resultset = [
                 "resultset" => [
-                    "count"         => $model->count_data('request ot'),
+                    "count"         => $model->count_data('request ot', "WHERE `$type` = '$ID'"),
                     "offset"        => $offset,
                     "limit"         => $limit,
                     "order_column"  => $order_column,
