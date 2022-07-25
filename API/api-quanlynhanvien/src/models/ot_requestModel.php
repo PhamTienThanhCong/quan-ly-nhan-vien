@@ -63,12 +63,18 @@ class ot_requestModel extends ConnectDB{
         }
     }
 
+    // delete muntyple request ot detail
+    public function delete_request_ot_details($id){
+        $sql = "DELETE FROM `request ot detail` WHERE `ROT_ID` = '$id'";
+        mysqli_query($this->connection, $sql);
+    }
+
     // delete an request ot
     public function delete_request_ot($id){
         if ($this->check_isset('request ot','ROT_ID',$id,'ROT_ID',$id) == 0){
             return false;
         }else{
-            $this->delete_request_ot_detail($id);
+            $this->delete_request_ot_details($id);
             $sql = "DELETE FROM `request ot` WHERE `ROT_ID` = '$id'";
             mysqli_query($this->connection, $sql);
             return true;

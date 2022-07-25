@@ -16,7 +16,7 @@
         // API 1: Thêm một thông tin request OT
         public function create_ot() {
             $summary            = "Create New Request OT";
-            $EMPLOYEE_ID        = 15;
+            $EMPLOYEE_ID        = 8;
             $MANAGER_ID         = 6;
             $REASON             = "Need OT to earn more money";
             $UPDATE_DATE        = "2022-07-18 23:00:00";
@@ -137,7 +137,7 @@
             }
 
             if ($model->delete_request_ot($id)){
-                echo $this->data_export(400,"An OT Request Of Employee Has Been Delete Successfully", $summary, null, true);
+                echo $this->data_export(200,"An OT Request Of Employee Has Been Delete Successfully", $summary, null, true);
             }else{
                 echo $this->data_export(404,"Employee’s OT Request Not Found", $summary, null, false);
             }
@@ -267,7 +267,7 @@
                 "metadata" => $resultset,
             ];
             if ($ot_requests != []){
-                echo $this->data_export(200,"Employee’s Request OTs Have Been Found", $summary, $information_requests, false);
+                echo $this->data_export(200,"Employee’s Request OTs Have Been Found", $summary, $information_requests, true);
             }else{
                 echo $this->data_export(404,"Request OT Not Found", $summary, null, false);
             }
@@ -280,7 +280,6 @@
             }else{
                 $ot_requests = [];
             }
-
             if ($ot_requests != []){
                 echo $this->data_export(200,"An Employee’s OT Request Have Been Found", "Get A Specified Employee’s OT Request", $ot_requests, true);
             }else{

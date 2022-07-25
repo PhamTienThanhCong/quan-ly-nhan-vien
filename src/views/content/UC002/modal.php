@@ -67,20 +67,20 @@
                     </div>
                     <div class="total">
                         <p>total estimated hours</p>
-                        <input type="number" name="" id="" value="0" readonly="readonly">
+                        <input type="number" name="" id="estimated_hours" value="0">
                     </div>
                     <div class="fl_up">
                         <p>email follow up</p>
-                        <select name="fl_up" id="">
-                            <option value="yes">yes</option>
-                            <option value="no">no</option>
+                        <select name="fl_up" id="NOTIFICATION_FLAG">
+                            <option value="0">no</option>
+                            <option value="1">yes</option>
                         </select>
                     </div>
                     <div class="status">
                         <p>status</p>
-                        <select name="fl_up" id="">
-                            <option value="yes">draft</option>
-                            <option value="no">reject</option>
+                        <select name="fl_up" id="STATUS_REQUEST">
+                            <option value="Reject">reject</option>
+                            <option value="Draft">draft</option>
                         </select>
                     </div>
                     <div class="date">
@@ -92,7 +92,7 @@
 
             <div class="textare-form">
                 <p>reason OT</p>
-                <textarea placeholder="Type something..." cols="30" rows="10"></textarea>
+                <textarea placeholder="Type something..." cols="30" rows="10" id="REASON_EMPLOYEE"></textarea>
             </div>
 
             <div class="ot-rq-detail">
@@ -128,3 +128,50 @@
 
     </form>
 </div>
+
+<div class="modal-edit-error js-modal-edit-error">
+    <div class="modal-contain js-modal-contain-edit-error">
+            <div class="modal-close js-modal-close-edit-error">
+                <i onclick="hideError()" style="cursor:pointer" class="fa-solid fa-xmark"></i>
+            </div>
+        <div class="modal-content">
+            <i class="fa-regular fa-circle-xmark"></i>
+            <p id="content-error-alert" style="text-transform: none;">You cannot edit or submit your PA Goal Form anymore because time for your Self-Assessment request is overdue</p>
+        </div>
+    </div>
+</div>
+
+<!-- model delete -->
+
+<div class="modal-delete-re js-modal-del-re">
+    <div class="modal-contain js-modal-contain-re">
+        <div class="modal-header js-modal-header">
+            <p class="modal--heading">Delete Request</p>
+            <div class="modal-close-delete-re js-modal-close-del-re">
+                <i onclick="hideDelRequest()" class="fa-solid fa-xmark"></i>
+            </div>
+        </div>
+        <div class="modal-content">
+            <p>Do you want to delete this request? This step cannot be undo.</p>
+            <a href="#" onclick="showDelConfirm()" class="btn js-confirm">OK</a>
+            <a href="#" onclick="hideDelRequest()" class="btn js-cancel-btn">cancel</a>
+        </div>
+    </div>
+</div>
+
+<div class="modal-delete-co js-modal-del-co">
+    <div class="modal-contain js-modal-contain-co">
+        <div class="modal-header js-modal-header">
+            <p class="modal--heading">delete successfully</p>
+            <div class="modal-close-delete-co js-modal-close-del-co">
+                <i onclick="hideDelConfirm ()" class="fa-solid fa-xmark"></i>
+            </div>
+        </div>
+        <div class="modal-content">
+            <p>Congratulations! You delete this request successfully!</p>
+            <a href="#" onclick="hideDelConfirm ()" class="btn ok-btn">OK</a>
+        </div>
+    </div>
+</div>
+
+<!-- model delete -->

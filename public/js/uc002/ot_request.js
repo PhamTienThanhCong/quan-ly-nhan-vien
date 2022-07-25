@@ -1,6 +1,8 @@
 const root = document.getElementById('root');
 var type = "EMPLOYEE_ID";
 var url_get = api_uc002 + `/ot_requests&${type}=${id_user}`
+var new_data = [];
+var OTRequest_ID = 0;
 
 var data_request_ot = [];
 function generate_data(data = []){
@@ -35,12 +37,12 @@ function generate_data(data = []){
             <td>${data[i].ESTIMATED_HOURS}</td>
             <td>${data[i].START_DATE}</td>
             <td>${data[i].END_DATE}</td>
-            <td class="pending">${data[i].STATUS}</td>
+            <td class="${data[i].STATUS}">${data[i].STATUS}</td>
             <td>${data[i].CREATE_DATE}</td>
             <td>${data[i].MANAGER_ID}</td>
             <td>${data[i].MANAGER_COMMENT}</td>
             <td class="action-area">
-                <i class="fa-solid fa-trash-can js-trash js-del-re"></i>
+                <i onclick="delete_ot_request('${data[i].id}', '${data[i].STATUS}')" class="fa-solid fa-trash-can js-trash js-del-re"></i>
                 <i onclick="edit_ot_request(${data[i].id})" class="fa-solid fa-pen js-fix"></i>
             </td>
         </tr>
@@ -48,7 +50,6 @@ function generate_data(data = []){
     }
 }
 
-var new_data = [];
 function edit_ot_request(id){
     var url_get = `${api_uc002}/ot_request/${id}`;
     $.ajax({
@@ -59,12 +60,31 @@ function edit_ot_request(id){
         success: function (response) {
             if (response.success) {
                 new_data = response.data;
+                update_profile_manager(new_data.MANAGER_ID);
+                update_info_request_ot(new_data);
+                insert_request_ot_detail(new_data.OTRequestDetails);
+                document.getElementById('btn-model').click();
             }
         }
     });
 }
 
-$(document).ready(function () {
+function delete_an_request_ot(id){
+    var url_get = `${api_uc002}/destroy_request_ot/${id}`;
+    console.log(url_get);
+    $.ajax({
+        type: "GET",
+        url: url_get,
+        dataType: "json",
+        success: function (response) {
+            if (response.success){
+                generate_data_from_request();
+            }
+        }
+    });
+}
+
+function generate_data_from_request(){
     $.ajax({
         type: "GET",
         url: url_get,
@@ -72,9 +92,19 @@ $(document).ready(function () {
         dataType: "json",
         success: function (response) {
             data_request_ot = response;
-            if (data_request_ot.success == true) {
+            if (data_request_ot.success) {
                 generate_data(data_request_ot.data.value);
+            }else{
+                root.innerHTML = `
+                    <img src="${host_name}/public/img/image/oh crap.png" width="420" height="300" alt="">
+                    <p>you don't have any OT request. you can create a new one!</p>
+                `;
             }
         }
     });
+}
+
+$(document).ready(function () {
+    generate_data_from_request();
 });
+
