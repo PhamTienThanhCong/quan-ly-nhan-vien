@@ -10,6 +10,11 @@ for (const create_rq of create_rqs) {
 
 function showNewOTRequest () {
     modal_new_rq.classList.add('open')
+    if(document.getElementById('OTRequest_ID').value != "0"){
+        document.getElementById('OTRequest_ID').value = 0;
+        reset_request_ot_detail();
+        document.getElementById('REASON_EMPLOYEE').value = "";
+    }
 }
 
 function hideNewOTRequest () {

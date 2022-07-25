@@ -1,6 +1,7 @@
-const modal_edit_eror = document.querySelector('.js-modal-edit-error')
-const modal_del_co = document.querySelector('.js-modal-del-co')
-const modal_del_re = document.querySelector('.js-modal-del-re')
+const modal_edit_eror = document.querySelector('.js-modal-edit-error');
+const modal_del_co = document.querySelector('.js-modal-del-co');
+const modal_del_re = document.querySelector('.js-modal-del-re');
+const modal_notification = document.querySelector('.js-modal-push-re');
 
 function showError (content) {
     modal_edit_eror.classList.add('open')
@@ -27,4 +28,19 @@ function hideDelRequest () {
 
 function hideDelConfirm () {
     modal_del_co.classList.remove('open')
+}
+
+function showNotification(title, message) {
+    modal_notification.classList.add('open');
+    document.getElementById('title-notification').innerHTML = title;
+    document.getElementById('message-notification').innerHTML = message;
+}
+
+function hiddenNotification() {
+    modal_notification.classList.remove('open')
+}
+
+function hiddenNotificationAll(){
+    modal_notification.classList.remove('open');
+    modal_new_rq.classList.remove('open');
 }

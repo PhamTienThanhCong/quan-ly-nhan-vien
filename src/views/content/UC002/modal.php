@@ -1,10 +1,13 @@
 <div class="modal-new-rq js-modal-new-rq">
-    <form class="modal-contain js-modal-contain-new-rq">
+    <form id="form-post-request" method="post" action="<?= $host_name ?>/uc002/test"class="modal-contain js-modal-contain-new-rq">
+        
+    <input type="hidden" name="OTRequest_ID" id="OTRequest_ID" value="0">
+
         <div class="modal__heading">
             <h1>create new OT request</h1>
             <div class="button">
-                <button class="btn">submit</button>
-                <button class="btn">save</button>
+                <button type="button" id="submit-btn-text" class="btn">submit</button>
+                <button type="submit" id="submit-btn-save" class="btn">save</button>
                 <button type="button" class="btn cancel">cancel</button>
             </div>
         </div>
@@ -15,19 +18,19 @@
                 <div class="form flex_start">
                     <div class="ful-name">
                         <p>full name</p>
-                        <input type="text" name="EMPLOYEE_NAME" id="EMPLOYEE_NAME" readonly="readonly">
+                        <input type="text" name="EMPLOYEE_NAME" id="EMPLOYEE_NAME" readonly="readonly" required>
                     </div>
                     <div class="email">
                         <p>email</p>
-                        <input type="text" name="EMPLOYEE_EMAIL" id="EMPLOYEE_EMAIL" readonly="readonly">
+                        <input type="text" name="EMPLOYEE_EMAIL" id="EMPLOYEE_EMAIL" readonly="readonly" required>
                     </div>
                     <div class="department">
                         <p>department</p>
-                        <input type="text" name="EMPLOYEE_DEPART_NAME" id="EMPLOYEE_DEPART_NAME" readonly="readonly">
+                        <input type="text" name="EMPLOYEE_DEPART_NAME" id="EMPLOYEE_DEPART_NAME" readonly="readonly" required>
                     </div>
                     <div class="employee ID">
                         <p>employee ID</p>
-                        <input type="text" name="EMPLOYEE_ID" id="EMPLOYEE_ID" readonly="readonly">
+                        <input type="text" name="EMPLOYEE_ID" id="EMPLOYEE_ID" readonly="readonly" required>
                     </div>
                 </div>
             </div>
@@ -37,19 +40,19 @@
                 <div class="form flex_start">
                     <div class="ful-name">
                         <p>full name</p>
-                        <input type="text" name="MANAGER_NAME" id="MANAGER_NAME" readonly="readonly">
+                        <input type="text" name="MANAGER_NAME" id="MANAGER_NAME" readonly="readonly" required>
                     </div>
                     <div class="email">
                         <p>email</p>
-                        <input type="text" name="MANAGER_EMAIL" id="MANAGER_EMAIL" readonly="readonly">
+                        <input type="text" name="MANAGER_EMAIL" id="MANAGER_EMAIL" readonly="readonly" required>
                     </div>
                     <div class="department">
                         <p>department</p>
-                        <input type="text" name="MANAGER_DEPART_NAME" id="MANAGER_DEPART_NAME" readonly="readonly">
+                        <input type="text" name="MANAGER_DEPART_NAME" id="MANAGER_DEPART_NAME" readonly="readonly" required>
                     </div>
                     <div class="appraiser ID">
                         <p>appraiser (manager) ID</p>
-                        <input type="text" name="MANAGER_ID" id="MANAGER_ID" readonly="readonly">
+                        <input type="text" name="MANAGER_ID" id="MANAGER_ID" readonly="readonly" required>
                     </div>
                 </div>
             </div>
@@ -59,40 +62,40 @@
                 <div class="form flex_start">
                     <div class="date">
                         <p>start date</p>
-                        <input type="date" name="" id="start-date">
+                        <input type="date" name="START_DATE" id="start-date" required>
                     </div>
                     <div class="date">
                         <p>end date</p>
-                        <input type="date" name="" id="end-date">
+                        <input type="date" name="END_DATE" id="end-date" required>
                     </div>
                     <div class="total">
                         <p>total estimated hours</p>
-                        <input type="number" name="" id="estimated_hours" value="0">
+                        <input type="number" name="ESTIMATED_HOURS" id="estimated_hours" value="0" required>
                     </div>
                     <div class="fl_up">
                         <p>email follow up</p>
-                        <select name="fl_up" id="NOTIFICATION_FLAG">
+                        <select name="NOTIFICATION_FLAG" id="NOTIFICATION_FLAG">
                             <option value="0">no</option>
                             <option value="1">yes</option>
                         </select>
                     </div>
                     <div class="status">
                         <p>status</p>
-                        <select name="fl_up" id="STATUS_REQUEST">
+                        <select name="STATUS" id="STATUS_REQUEST">
                             <option value="Reject">reject</option>
                             <option value="Draft">draft</option>
                         </select>
                     </div>
                     <div class="date">
                         <p>created date</p>
-                        <input type="date" name="" id="today-date">
+                        <input type="date" name="CREATE_DATE" id="today-date" readonly="readonly" required>
                     </div>
                 </div>
             </div>
 
             <div class="textare-form">
                 <p>reason OT</p>
-                <textarea placeholder="Type something..." cols="30" rows="10" id="REASON_EMPLOYEE"></textarea>
+                <textarea name="REASON" placeholder="Type something..." cols="30" rows="10" id="REASON_EMPLOYEE" required></textarea>
             </div>
 
             <div class="ot-rq-detail">
@@ -100,11 +103,11 @@
                 <div class="form flex_start">
                     <div class="date">
                         <p>date</p>
-                        <input type="date" name="" id="request-date">
+                        <input type="date" name="" id="request-date" required>
                     </div>
                     <div class="date">
                         <p>hours</p>
-                        <input type="number" max="4" min="1" name="" id="request-time" value="1">
+                        <input type="number" max="4" min="1" name="" id="request-time" value="1" required>
                     </div>
                     <button class="btn" type="button" onclick="hoursActive()">Add OT details</button>
                 </div>
@@ -124,7 +127,7 @@
                                 
             </table>
         </div>
-        <input type="hidden" name="number-ot" id="number-ot" value="0">
+        <input type="hidden" name="number-ot" id="number-ot" value="0" required>
 
     </form>
 </div>
@@ -175,3 +178,19 @@
 </div>
 
 <!-- model delete -->
+
+<div class="modal-delete-re js-modal-push-re">
+    <div class="modal-contain js-modal-contain-re">
+        <div class="modal-header js-modal-header">
+            <p id="title-notification"> class="modal--heading">Delete Request</p>
+            <div class="modal-close-delete-re js-modal-close-del-re">
+                <i onclick="hiddenNotification()" class="fa-solid fa-xmark"></i>
+            </div>
+        </div>
+        <div class="modal-content">
+            <p id="message-notification">Do you want to delete this request? This step cannot be undo.</p>
+            <a href="#" onclick="hiddenNotification()" class="btn js-confirm">OK</a>
+            <a href="#" onclick="hiddenNotificationAll()" class="btn js-cancel-btn">Back to main</a>
+        </div>
+    </div>
+</div>

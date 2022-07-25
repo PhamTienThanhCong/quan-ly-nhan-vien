@@ -57,17 +57,26 @@ function update_profile_user(id){
 
 function update_info_request_ot(data){
     document.getElementById('start-date').value = data.START_DATE.split(' ')[0];
-    document.getElementById('end-date').value = data.END_DATE;
-    document.getElementById('today-date').value = data.CREATE_DATE;
+    document.getElementById('end-date').value = data.END_DATE.split(' ')[0];
+    document.getElementById('today-date').value = data.CREATE_DATE.split(' ')[0];
     document.getElementById('estimated_hours').value = data.ESTIMATED_HOURS;
     document.getElementById('NOTIFICATION_FLAG').value = data.NOTIFICATION_FLAG;
     document.getElementById('STATUS_REQUEST').value = data.STATUS;
+    document.getElementById('OTRequest_ID').value = data.id;
+    if(data.STATUS == "Pending"){
+        document.getElementById('STATUS_REQUEST').value = "Reject";
+    }
     document.getElementById('REASON_EMPLOYEE').value = data.REASON;
 }
 
 function reset_request_ot_detail(){
     table_ot.innerHTML = "";
     table_count = 1;
+    document.getElementById('submit-btn-text').innerHTML = "Submit";
+    document.getElementById('today-date').value = new Date().toDateInputValue();
+    document.getElementById('start-date').value = new Date().toDateInputValue();
+    document.getElementById('end-date').value = new Date().toDateInputValue();
+    document.getElementById('request-date').value = new Date().toDateInputValue();
 }
 
 function insert_request_ot_detail(data){
@@ -101,21 +110,25 @@ function delete_ot_request(id, status){
 function hoursActive(){
     var date_ot = document.getElementById('request-date').value;
     var hour_ot = document.getElementById('request-time').value;
-    table_ot.innerHTML += `
-    <tr id="colum-${table_count}">
-            <td>${formatDate(date_ot)}</td>
-            <td>${hour_ot}</td>
-            <td>
+    if (hour_ot <= 4 && hour_ot > 0){
+        table_ot.innerHTML += `
+        <tr id="colum-${table_count}">
+                <td>${formatDate(date_ot)}</td>
+                <td>${hour_ot}</td>
+                <td>
                 <i style="cursor: pointer;" onclick="deleteAnValue(${table_count})" class="fa-solid fa-trash-can"></i>
                 <i style="cursor: not-allowed;" class="fa-solid fa-pen"></i>
-            </td>
-            <input type="hidden" name="date-ot-${table_count}" value="${date_ot}">
-            <input type="hidden" name="hours-ot-${table_count}" value="${hour_ot}>
-        </tr>
-    `;
-    table_count++;
+                </td>
+                <input type="hidden" name="date-ot-${table_count}" value="${date_ot}">
+                <input type="hidden" name="hour-ot-${table_count}" value="${hour_ot}">
+            </tr>
+        `;
+        table_count++;
+        document.getElementById('number-ot').value = table_count;
+    }else{
+        showError("You cannnot enter > 4 hours/day");
+    }
     document.getElementById('request-time').value = 1;
-    document.getElementById('number-ot').value = table_count;
 }
 
 document.getElementById('today-date').value = new Date().toDateInputValue();
@@ -126,3 +139,9 @@ document.getElementById('request-date').value = new Date().toDateInputValue();
 $(document).ready(function () {
     update_profile_user(id_user)
 });
+
+document.getElementById('submit-btn-text').addEventListener('click', function(e){
+    if (document.getElementById('OTRequest_ID').value == "0"){
+        document.getElementById('submit-btn-save').click();
+    }
+})

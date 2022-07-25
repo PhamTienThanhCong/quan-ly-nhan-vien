@@ -3,6 +3,7 @@ var type = "EMPLOYEE_ID";
 var url_get = api_uc002 + `/ot_requests&${type}=${id_user}`
 var new_data = [];
 var OTRequest_ID = 0;
+const formRequest = document.getElementById('form-post-request');
 
 var data_request_ot = [];
 function generate_data(data = []){
@@ -43,30 +44,36 @@ function generate_data(data = []){
             <td>${data[i].MANAGER_COMMENT}</td>
             <td class="action-area">
                 <i onclick="delete_ot_request('${data[i].id}', '${data[i].STATUS}')" class="fa-solid fa-trash-can js-trash js-del-re"></i>
-                <i onclick="edit_ot_request(${data[i].id})" class="fa-solid fa-pen js-fix"></i>
+                <i onclick="edit_ot_request(${data[i].id},'${data[i].STATUS}')" class="fa-solid fa-pen js-fix"></i>
             </td>
         </tr>
         `;
     }
 }
 
-function edit_ot_request(id){
+function edit_ot_request(id, status){
     var url_get = `${api_uc002}/ot_request/${id}`;
-    $.ajax({
-        type: "GET",
-        url: url_get,
-        data: "data",
-        dataType: "json",
-        success: function (response) {
-            if (response.success) {
-                new_data = response.data;
-                update_profile_manager(new_data.MANAGER_ID);
-                update_info_request_ot(new_data);
-                insert_request_ot_detail(new_data.OTRequestDetails);
-                document.getElementById('btn-model').click();
+    if (status == "Draft" || status == "Pending"){
+        $.ajax({
+            type: "GET",
+            url: url_get,
+            data: "data",
+            dataType: "json",
+            success: function (response) {
+                if (response.success) {
+                    new_data = response.data;
+                    update_profile_manager(new_data.MANAGER_ID);
+                    update_info_request_ot(new_data);
+                    insert_request_ot_detail(new_data.OTRequestDetails);
+                    document.getElementById('submit-btn-text').innerHTML = "Unsubmit";
+                    document.getElementById('OTRequest_ID').value = id;
+                    modal_new_rq.classList.add('open');
+                }
             }
-        }
-    });
+        });
+    }else{
+        showError("You CAN ONLY edit OT request that has status is Draft or Pending");
+    }
 }
 
 function delete_an_request_ot(id){
@@ -108,3 +115,34 @@ $(document).ready(function () {
     generate_data_from_request();
 });
 
+formRequest.addEventListener('submit', function (e) {
+    e.preventDefault();
+    var id = document.getElementById('OTRequest_ID').value;
+    var values = $(this).serialize();
+    if (id == 0){
+        var url_post = `${api_uc002}/create_ot`;
+        $.ajax({
+            type: "POST",
+            url: url_post,
+            data: values,
+            dataType: "json",
+            success: function (response) {
+                if (response.success) {
+                    generate_data_from_request();
+                    showNotification("Submit successfully", "Congratulations! You submit the OT request successfully. You can go back to main to see the request.");
+                }
+            }
+        });
+    }else{
+        var url_post = `${api_uc002}/edit_request_ot/${id}`;
+        $.ajax({
+            type: "POST",
+            url: url_post,
+            data: values,
+            dataType: "json",
+            success: function (response) {
+                generate_data_from_request();
+            }
+        });
+    }
+});
