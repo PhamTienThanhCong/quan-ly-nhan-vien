@@ -91,7 +91,7 @@ function insert_request_ot_detail(data){
                     <i style="cursor: not-allowed;" class="fa-solid fa-pen"></i>
                 </td>
                 <input type="hidden" name="date-ot-${table_count}" value="${data[i].DATE}">
-                <input type="hidden" name="hours-ot-${table_count}" value="${data[i].HOUR}>
+                <input type="hidden" name="hour-ot-${table_count}" value="${data[i].HOUR}">
             </tr>
         `
         table_count++;

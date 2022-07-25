@@ -16,28 +16,38 @@
         // API 1: Thêm một thông tin request OT
         public function create_ot() {
             $summary            = "Create New Request OT";
-            $EMPLOYEE_ID        = 8;
-            $MANAGER_ID         = 6;
-            $REASON             = "Need OT to earn more money";
-            $UPDATE_DATE        = "2022-07-18 23:00:00";
-            $STATUS             = "Draft";
+            $EMPLOYEE_ID        = $_POST["EMPLOYEE_ID"];
+            $MANAGER_ID         = $_POST["MANAGER_ID"];
+            $REASON             = addslashes($_POST["REASON"]);
+            $UPDATE_DATE        = date('d-m-y h:i:s');
+            $CREATE_DATE        = $_POST["CREATE_DATE"];
+            $STATUS             = $_POST["STATUS"];
             $MANAGER_COMMENT    = null;
-            $START_DATE         = "2022-08-01";
-            $ESTIMATED_HOURS    = 8;
-            $END_DATE           = "2022-08-02";
+            $START_DATE         = $_POST["START_DATE"];
+            $ESTIMATED_HOURS    = $_POST["ESTIMATED_HOURS"];
+            $END_DATE           = $_POST["END_DATE"];
             $UNSUBMIT_REASON    = null;
-            $NOTIFICATION_FLAG  = true;
+            $NOTIFICATION_FLAG  = $_POST["NOTIFICATION_FLAG"];
 
-            $OTRequestDetails = [
-                [
-                    "DATE"      => "2022-08-01",
-                    "HOUR"      => 4
-                ],
-                [
-                    "DATE"      => "2022-08-02",
-                    "HOUR"      => 4
-                ]
-            ];
+            $OTRequestDetails = [];
+
+            $number_ot = $_POST['number-ot'];
+            $index = 0;
+            for ($i = 1 ; $i < $number_ot ; $i++){
+                if (isset($_POST["date-ot-$i"])){
+                    $date_ot = $_POST["date-ot-$i"];
+                    $hour_ot = $_POST["hour-ot-$i"];
+                    $OTRequestDetails[$index] = [
+                        "DATE"  => $date_ot,
+                        "HOUR"  => $hour_ot
+                    ];
+                    $index++;
+                }
+            }
+
+            if ($STATUS == "Reject"){
+                $STATUS = "Pending";
+            }
             
             $model  = $this->model('ot_requestModel');
 
@@ -90,32 +100,42 @@
                 exit();
             }
 
-            $EMPLOYEE_ID        = 15;
-            $MANAGER_ID         = 6;
-            $REASON             = "Need OT to earn more money";
-            $UPDATE_DATE        = "2022-07-18 23:00:00";
-            $STATUS             = "Draft";
+            $EMPLOYEE_ID        = $_POST["EMPLOYEE_ID"];
+            $MANAGER_ID         = $_POST["MANAGER_ID"];
+            $REASON             = addslashes($_POST["REASON"]);
+            $UPDATE_DATE        = date('d-m-y h:i:s');
+            $CREATE_DATE        = $_POST["CREATE_DATE"];
+            $STATUS             = $_POST["STATUS"];
             $MANAGER_COMMENT    = null;
-            $START_DATE         = "2022-08-01";
-            $ESTIMATED_HOURS    = 8;
-            $END_DATE           = "2022-08-02";
+            $START_DATE         = $_POST["START_DATE"];
+            $ESTIMATED_HOURS    = $_POST["ESTIMATED_HOURS"];
+            $END_DATE           = $_POST["END_DATE"];
             $UNSUBMIT_REASON    = null;
-            $NOTIFICATION_FLAG  = true;
+            $NOTIFICATION_FLAG  = $_POST["NOTIFICATION_FLAG"];
 
-            $OTRequestDetails = [
-                [
-                    "DATE"      => "2022-08-01",
-                    "HOUR"      => 3
-                ],
-                [
-                    "DATE"      => "2022-08-02",
-                    "HOUR"      => 3
-                ]
-            ];
+            $OTRequestDetails = [];
+
+            $number_ot = $_POST['number-ot'];
+            $index = 0;
+            for ($i = 1 ; $i < $number_ot ; $i++){
+                if (isset($_POST["date-ot-$i"])){
+                    $date_ot = $_POST["date-ot-$i"];
+                    $hour_ot = $_POST["hour-ot-$i"];
+                    $OTRequestDetails[$index] = [
+                        "DATE"  => $date_ot,
+                        "HOUR"  => $hour_ot
+                    ];
+                    $index++;
+                }
+            }
+
+            if ($STATUS == "Reject"){
+                $STATUS = "Pending";
+            }
 
             $result_check = $model->edit_request_ot($id, $EMPLOYEE_ID, $MANAGER_ID, $REASON, $UPDATE_DATE, $STATUS, $MANAGER_COMMENT, $START_DATE, $ESTIMATED_HOURS, $END_DATE, $UNSUBMIT_REASON, $NOTIFICATION_FLAG);
             if ($result_check){
-                $model->delete_request_ot_detail($id);
+                $model->delete_request_ot_details($id);
                 $model->createOtDetail($id, $OTRequestDetails);
                 echo $this->data_export(200,"Updated Employee’s OT Information Successfully", $summary, null, true);
             }else{
@@ -222,8 +242,8 @@
             $summary = "Get All Employee’s Request OT Information Sort By CREATE_DATE DESC AND PAGINATE";
             $limit = 10;
             $offset = 0;
-            $order_column = "CREATE_DATE";
-            $sort_by = "asc";
+            $order_column = "ROT_ID";
+            $sort_by = "desc";
 
             if (isset($_GET['limit'])){
                 $limit = $_GET['limit'];
