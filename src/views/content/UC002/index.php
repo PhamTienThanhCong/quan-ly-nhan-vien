@@ -23,6 +23,5 @@ require_once "./src/views/content/UC002/modal.php"
 </script>
 
 <script src="<?= $host_name ?>/public/js/uc002/model.js"></script>
-<script src="<?= $host_name ?>/public/js/ot_request.js"></script>
 <script src="<?= $host_name ?>/public/js/uc002/ot_request.js"></script>
 <script src="<?= $host_name ?>/public/js/uc002/create_request.js"></script>

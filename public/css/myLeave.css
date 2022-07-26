@@ -571,3 +571,16 @@ font-family: 'Rubik', sans-serif;
     color: var(--white);
     transition: linear .3s;
 }
+
+.modal-unsubmit-request-textare{
+    width: 100%;
+    border: 1px solid #026345;
+    padding: 10px;
+    height: 150px;
+    resize: none;
+}
+
+.modal-unsubmit-request-label{
+    display: block;
+    text-align: left;
+}

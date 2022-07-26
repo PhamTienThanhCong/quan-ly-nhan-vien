@@ -65,13 +65,12 @@
         }
         
         // API 2: Sửa một thông tin request OT Canceled
-        public function Canceled_request_ot($data = []){
+        public function canceled_request_ot($data = []){
             $model   = $this->model('ot_requestModel');
             $summary = "Unsubmit Employee’s Request OT Information";
 
-            $EMPLOYEE_ID        = 15;
-            // $UNSUBMIT_REASON    = $_POST['UNSUBMIT_REASON'];
-            $UNSUBMIT_REASON    = "em có bầu rồi";
+            $EMPLOYEE_ID        = $_POST['EMPLOYEE_ID'];
+            $UNSUBMIT_REASON    = $_POST['UNSUBMIT_REASON'];
             $STATUS             = "Canceled";
 
             if (isset($data[0])){

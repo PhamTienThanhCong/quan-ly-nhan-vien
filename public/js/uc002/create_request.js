@@ -65,6 +65,7 @@ function update_info_request_ot(data){
     document.getElementById('OTRequest_ID').value = data.id;
     if(data.STATUS == "Pending"){
         document.getElementById('STATUS_REQUEST').value = "Reject";
+        document.getElementById('status-draft').disabled = true;
     }
     document.getElementById('REASON_EMPLOYEE').value = data.REASON;
 }
@@ -96,6 +97,7 @@ function insert_request_ot_detail(data){
         `
         table_count++;
     }
+    document.getElementById('number-ot').value = table_count;
 }
 
 function delete_ot_request(id, status){
@@ -143,5 +145,8 @@ $(document).ready(function () {
 document.getElementById('submit-btn-text').addEventListener('click', function(e){
     if (document.getElementById('OTRequest_ID').value == "0"){
         document.getElementById('submit-btn-save').click();
+    }else{
+        showModalUnSubmit();
+        document.getElementById('modal-unsubmit-request-text').value = "";
     }
 })

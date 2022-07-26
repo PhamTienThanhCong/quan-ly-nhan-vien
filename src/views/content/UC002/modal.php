@@ -82,8 +82,8 @@
                     <div class="status">
                         <p>status</p>
                         <select name="STATUS" id="STATUS_REQUEST">
-                            <option value="Reject">reject</option>
-                            <option value="Draft">draft</option>
+                            <option id="status-draft" value="Draft">Draft</option>
+                            <option value="Reject">Reject</option>
                         </select>
                     </div>
                     <div class="date">
@@ -182,7 +182,7 @@
 <div class="modal-delete-re js-modal-push-re">
     <div class="modal-contain js-modal-contain-re">
         <div class="modal-header js-modal-header">
-            <p id="title-notification"> class="modal--heading">Delete Request</p>
+            <p id="title-notification" class="modal--heading">Delete Request</p>
             <div class="modal-close-delete-re js-modal-close-del-re">
                 <i onclick="hiddenNotification()" class="fa-solid fa-xmark"></i>
             </div>
@@ -192,5 +192,24 @@
             <a href="#" onclick="hiddenNotification()" class="btn js-confirm">OK</a>
             <a href="#" onclick="hiddenNotificationAll()" class="btn js-cancel-btn">Back to main</a>
         </div>
+        <br>
+       <br> 
     </div>
+</div>
+
+<div class="modal-delete-re js-modal-unsubmit">
+    <form id="model-unsubmit-request" method="post" class="modal-contain js-modal-contain-re">
+        <div class="modal-header js-modal-header">
+            <p id="title-notification" class="modal--heading" style="text-align: center;">Unsubmit Request</p>
+        </div>
+        <div class="modal-content">
+            <input type="hidden" name="EMPLOYEE_ID" value="<?= $_SESSION['id'] ?>">
+            <label class="modal-unsubmit-request-label" for="">Reason unsubmit: </label>
+            <textarea id="modal-unsubmit-request-text" class="modal-unsubmit-request-textare" name="UNSUBMIT_REASON" id="" cols="30" rows="10" placeholder="Type the reason that you want to unsubmit the OT Request...."></textarea>
+            <br><br>
+            <button href="#" type="submit" style="background-color: var(--green); color: var(--white); cursor: pointer;" class="btn js-confirm">Send</button>
+            <a href="#" onclick="hiddenModalUnSubmit()" class="btn js-cancel-btn">Cancel</a>
+        </div>
+       <br> 
+    </form>
 </div>

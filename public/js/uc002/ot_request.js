@@ -141,8 +141,28 @@ formRequest.addEventListener('submit', function (e) {
             data: values,
             dataType: "json",
             success: function (response) {
+                edit_ot_request(new_data.ROT_ID, new_data.STATUS);
                 generate_data_from_request();
             }
         });
     }
 });
+
+document.getElementById('model-unsubmit-request').addEventListener('submit', function (e) {
+    e.preventDefault();
+    var id = new_data.ROT_ID;;
+    var url_post = `${api_uc002}/canceled_request_ot/${id}`;
+    var values = $(this).serialize();
+    $.ajax({
+        type: "POST",
+        url: url_post,
+        data: values,
+        dataType: "json",
+        success: function (response) {
+            generate_data_from_request();
+            reset_request_ot_detail();
+            hiddenModalUnSubmit();
+            showNotification("Unsubmit successfully", "Congratulations! You have unsubmit request successfully. We have emailed to your appraiser about your unsubmission.")
+        }
+    });
+})
