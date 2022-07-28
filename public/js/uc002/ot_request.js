@@ -63,8 +63,8 @@ function edit_ot_request(id, status){
                 if (response.success) {
                     new_data = response.data;
                     update_profile_manager(new_data.MANAGER_ID);
-                    update_info_request_ot(new_data);
                     insert_request_ot_detail(new_data.OTRequestDetails);
+                    update_info_request_ot(new_data);
                     document.getElementById('submit-btn-text').innerHTML = "Unsubmit";
                     document.getElementById('OTRequest_ID').value = id;
                     modal_new_rq.classList.add('open');

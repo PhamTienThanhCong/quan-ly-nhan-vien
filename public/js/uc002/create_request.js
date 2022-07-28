@@ -9,6 +9,11 @@ Date.prototype.toDateInputValue = (function() {
     return local.toJSON().slice(0,10);
 });
 
+function date_now(){
+    const now = new Date();
+    return new Date(now.getTime() - now.getTimezoneOffset() * 60000).toISOString().substring(0, 19);
+}
+
 function formatDate (date) {  
     return date.split("-").reverse().join("-");;
 }
@@ -74,7 +79,7 @@ function reset_request_ot_detail(){
     table_ot.innerHTML = "";
     table_count = 1;
     document.getElementById('submit-btn-text').innerHTML = "Submit";
-    document.getElementById('today-date').value = new Date().toDateInputValue();
+    document.getElementById('today-date').value = date_now();
     document.getElementById('start-date').value = new Date().toDateInputValue();
     document.getElementById('end-date').value = new Date().toDateInputValue();
     document.getElementById('request-date').value = new Date().toDateInputValue();
@@ -133,10 +138,7 @@ function hoursActive(){
     document.getElementById('request-time').value = 1;
 }
 
-document.getElementById('today-date').value = new Date().toDateInputValue();
-document.getElementById('start-date').value = new Date().toDateInputValue();
-document.getElementById('end-date').value = new Date().toDateInputValue();
-document.getElementById('request-date').value = new Date().toDateInputValue();
+reset_request_ot_detail()
 
 $(document).ready(function () {
     update_profile_user(id_user)

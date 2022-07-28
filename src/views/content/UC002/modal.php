@@ -88,7 +88,7 @@
                     </div>
                     <div class="date">
                         <p>created date</p>
-                        <input type="date" name="CREATE_DATE" id="today-date" readonly="readonly" required>
+                        <input type="datetime-local" name="CREATE_DATE" id="today-date" readonly="readonly" required>
                     </div>
                 </div>
             </div>
