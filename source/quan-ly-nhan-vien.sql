@@ -3,7 +3,7 @@
 -- https://www.phpmyadmin.net/
 --
 -- Máy chủ: localhost:3306
--- Thời gian đã tạo: Th7 25, 2022 lúc 02:31 PM
+-- Thời gian đã tạo: Th7 29, 2022 lúc 02:38 AM
 -- Phiên bản máy phục vụ: 5.7.33
 -- Phiên bản PHP: 7.4.19
 
@@ -18,7 +18,7 @@ SET time_zone = "+00:00";
 /*!40101 SET NAMES utf8mb4 */;
 
 --
--- Cơ sở dữ liệu: `quan-ly-nhan-vien`
+-- Cơ sở dữ liệu: `quan-ly-nhan-vien-main`
 --
 
 -- --------------------------------------------------------
@@ -199,140 +199,6 @@ INSERT INTO `pa_feedback` (`PAFB_ID`, `EMPLOYEE_BEINGFEEDBACK_ID`, `EMPLOYEE_FEE
 (5, 15, 8, '2022-07-17 11:03:46', 'Chị Linh làm việc rất chăm chỉ, giỏi và thân thiện. Chị ấy cũng thường xuyên giúp đỡ các thành viên khác', 'Responded', '2022-08-31 23:00:00', 6),
 (6, 13, 8, '1970-01-01 00:00:00', 'Hãy điền nội dung đánh giá ở đây', 'Not responding', '2022-08-31 23:00:00', 6);
 
--- --------------------------------------------------------
-
---
--- Cấu trúc bảng cho bảng `pa_goal`
---
-
-CREATE TABLE `pa_goal` (
-  `PAGOAL_ID` int(11) NOT NULL COMMENT 'ID của một PA form. Mỗi PA Form sẽ có nhiều thông tin mục tiêu ',
-  `EMPLOYEECREATE_ID` int(11) NOT NULL COMMENT 'ID của nhân viên tạo ra PA Form đó. Tham chiếu từ bảng employee',
-  `MANAGER_ID` int(11) NOT NULL COMMENT 'ID của quản lý cấp 1 quản lý PA form và nhân viên tạo PA Form. Tham chiếu từ bảng employee',
-  `LASTUPDATE_DATE` datetime NOT NULL DEFAULT '1970-01-01 00:00:00' COMMENT 'Thời gian cập nhật PA Form gần đây nhất. Mặc định để là ''1970-01-01 00:00:00''',
-  `STATUS` varchar(255) COLLATE utf8mb4_vietnamese_ci NOT NULL DEFAULT 'Draft' COMMENT 'Trạng thái xử lý của request OT. Gồm 1 trong 5 trạng thái: Draft, Pending, Approved, Rejected, Cancelled.',
-  `TOTAL_GOALS` int(11) NOT NULL DEFAULT '1' COMMENT 'Tổng mục tiêu của PA Form. Thông tin này được tính trên số lượng thông tin chi tiết goal của bảng pa goal detail cho PA Form đó',
-  `UNSUBMIT_REASON` varchar(5000) COLLATE utf8mb4_vietnamese_ci DEFAULT NULL COMMENT 'Lý do nhân viên muốn hủy gửi (unsubmit) form PA. Nếu trường này có thông tin, trạng thái của request bắt buộc là Cancelled, mặc định là None	',
-  `MANAGER_COMMENT` varchar(5000) COLLATE utf8mb4_vietnamese_ci DEFAULT NULL COMMENT 'Ghi lí do quản lý cấp 1 từ chối form PA. Nếu trường này có thông tin, trạng thái của form phải là "Rejected", mặc định là None',
-  `DEADLINE_PAGOAL` datetime NOT NULL COMMENT 'Deadline phải nộp PA Form. Thời gian này phải >= LASTUPDATE_DATE'
-) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_vietnamese_ci COMMENT='Bảng này cho biết thông tin của một PA Form';
-
---
--- Đang đổ dữ liệu cho bảng `pa_goal`
---
-
-INSERT INTO `pa_goal` (`PAGOAL_ID`, `EMPLOYEECREATE_ID`, `MANAGER_ID`, `LASTUPDATE_DATE`, `STATUS`, `TOTAL_GOALS`, `UNSUBMIT_REASON`, `MANAGER_COMMENT`, `DEADLINE_PAGOAL`) VALUES
-(1, 8, 6, '2021-07-11 21:00:00', 'Approved', 3, NULL, NULL, '2021-07-30 23:00:00'),
-(2, 8, 6, '2022-07-17 16:45:23', 'Pending', 5, NULL, NULL, '2022-08-30 16:45:23'),
-(3, 15, 6, '2022-07-17 19:37:34', 'Cancelled', 1, 'Không có đủ thời gian để hoàn thành mục tiêu', NULL, '2022-07-31 23:02:00'),
-(4, 15, 6, '2022-07-16 12:00:00', 'Draft', 1, NULL, NULL, '2022-07-31 23:00:00'),
-(5, 14, 6, '2022-07-14 19:44:33', 'Rejected', 1, NULL, 'Mục tiêu của PA này còn quá mơ hồ và quá rộng, chưa thực sự cụ thể', '2022-07-31 23:00:00'),
-(6, 14, 6, '2022-07-17 19:51:58', 'Pending', 1, NULL, NULL, '2022-07-31 23:00:00');
-
--- --------------------------------------------------------
-
---
--- Cấu trúc bảng cho bảng `pa_goal detail`
---
-
-CREATE TABLE `pa_goal detail` (
-  `PAGOALDETAIL_ID` int(11) NOT NULL COMMENT 'ID của một chi tiết mục tiêu (goal). Một form PA có thể có nhiều thông tin chi tiết mục tiêu',
-  `PAGOAL_ID` int(11) NOT NULL COMMENT 'ID của PA Form mà chi tiết mục tiêu thuộc về. Tham chiếu từ bảng pa goal',
-  `GOAL_NAME` varchar(255) COLLATE utf8mb4_vietnamese_ci DEFAULT NULL COMMENT 'Chứa thông tin về tên của mục tiêu',
-  `ACTION_STEP` varchar(5000) COLLATE utf8mb4_vietnamese_ci DEFAULT NULL COMMENT 'Chứa các bước thực hiện mục tiêu đó',
-  `DUE_DATE` datetime NOT NULL DEFAULT '1970-01-01 00:00:00' COMMENT 'Ngày dự kiến hoàn thành của mục tiêu',
-  `COMPLETED_DATE` datetime NOT NULL DEFAULT '1970-01-01 00:00:00' COMMENT 'Ngày hoàn thành thực tế của mục tiêu. Mặc định để là 1970-01-01 00:00:00, trong TH trạng thái của mục tiêu là "Completed" thì trường này phải có giá trỊ sao cho Complete Date phải >= Due Date',
-  `STATUS` varchar(255) COLLATE utf8mb4_vietnamese_ci NOT NULL DEFAULT 'Processing' COMMENT 'Trạng thái hoàn thành của mục tiêu đó.Có 1 trong 2 trạng thái "Processing", "Completed". Lưu ý: Trạng thái này của mục tiêu khác với trạng thái của PA Form. Trạng thái này nhân viên có thể sửa được.',
-  `COMMENT` varchar(5000) COLLATE utf8mb4_vietnamese_ci DEFAULT NULL COMMENT 'Bình luận của nhân viên về mục tiêu mà mình tạo ra'
-) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_vietnamese_ci COMMENT='Bảng này cho biết thông tin của 1 CHI TIẾT goal của PA Form';
-
---
--- Đang đổ dữ liệu cho bảng `pa_goal detail`
---
-
-INSERT INTO `pa_goal detail` (`PAGOALDETAIL_ID`, `PAGOAL_ID`, `GOAL_NAME`, `ACTION_STEP`, `DUE_DATE`, `COMPLETED_DATE`, `STATUS`, `COMMENT`) VALUES
-(1, 1, 'Kiếm thêm được nhiều dự án hơn', '1. Mở rộng mối quan hệ\r\n2. Thuyết phục khách hàng\r\n3. Kiếm được khách hàng\r\n4. Chốt dự án + giá cả', '2021-11-30 23:00:00', '2021-11-01 09:00:00', 'Completed', 'Cần hoàn thành nhanh nhất có thể'),
-(2, 1, 'Hoàn thành chứng chỉ Oracle Certified Associate (OCA) trong thời gian càng sớm càng tốt', '- Học và sử dụng Oracle cơ bản\r\n- Tham gia khóa học luyện chứng chỉ Oracle Certified Associate (OCA)', '2021-09-01 23:00:00', '2021-08-01 00:00:00', 'Completed', 'Không có comment'),
-(3, 1, 'Hoàn thành chứng chỉ Specialist cho Oracle Database 12c', '- Học và sử dụng Oracle cơ bản\r\n- Tham gia khóa học luyện chứng chỉ Specialist cho Oracle Database 12c', '2021-11-01 00:00:00', '2021-10-28 00:00:00', 'Completed', 'Có thể hoàn thành cuối cùng vì chứng chỉ này không bắt buộc'),
-(4, 2, 'Hoàn thành dự án Alola trước đầu tháng 10 năm nay', '- Tập trung nhiều giờ hơn để hoàn thành dự án Alola\r\n- Có thể OT thêm vài ngày để thúc đẩy tiến độ dự án, mỗi ngày OT tầm 3-4 tiếng.', '2022-09-30 23:21:27', '1970-01-01 00:00:00', 'Processing', 'Ưu tiên mục tiêu này trước các mục tiêu khác'),
-(5, 2, 'Đạt được trình độ Tiếng Anh đầu ra ít nhất: IELTS 6.5 với kĩ năng Speaking >= 5.0 trước tháng 12/2022. Có thể quy đổi ra các chứng chỉ tương đương khác như TOEFL, TOEIC', '- Lập kế hoạch ôn luyện tiếng anh mỗi ngày ít nhất 30 phút\r\n- Luyện nói ở trung tâm VUS vào thứ 7 và CN ít nhất 1 tiếng rưỡi', '2022-11-30 23:00:00', '1970-01-01 00:00:00', 'Processing', 'Không được trễ tiến độ khi hoàn thành mục tiêu này'),
-(6, 2, 'Tham gia chương trình Tình nguyện mùa hè xanh vào tháng 8 chung với công ty để đạt KPI', 'Hoàn thành nhanh các công việc trên công ty', '2022-08-30 23:00:00', '1970-01-01 00:00:00', 'Processing', NULL),
-(7, 2, 'Hoàn thành chứng chỉ \"Chứng nhận trong quản trị doanh nghiệp CNTT\" ( Certified in the Governance of Enterprise IT – CGEIT)', 'Dành thời gian ôn luyện ít nhất mỗi ngày 30 phút - 1 tiếng. Vào thứ 7, CN thì ôn nhiều hơn (>=2 tiếng)', '2022-11-01 23:00:00', '1970-01-01 00:00:00', 'Processing', NULL),
-(8, 2, 'Hoàn thành chứng chỉ \"AWS Certified Solutions Architect – Associate\"', '- Hoàn thành nhanh các công việc trên công ty\r\n- Học các kiến thức AWS cơ bản \r\n- Dành thời gian luyện đề mỗi ngày ít nhất 1 tiếng', '2022-12-31 00:00:00', '1970-01-01 00:00:00', 'Processing', 'Ưu tiên hoàn thành chứng chỉ này hơn các chứng chỉ khác'),
-(9, 3, 'Hoàn thành chứng chỉ \"Certified in the Governance of Enterprise IT – CGEIT\" trước giữa tháng 8', '- Dành nhiều thời gian hơn để học và ôn luyện thi mỗi ngày ít nhất 2 tiếng\r\n- Giảm bớt thời gian học và làm việc xuống', '2022-08-15 00:00:00', '1970-01-01 00:00:00', 'Processing', 'Là mục tiêu ưu tiên'),
-(10, 4, 'Hoàn thành chứng chỉ \"Data Science Council of America (DASCA) Principle Data Scientist (PDS)\" trước cuối tháng 12', 'Tập trung nhiều giờ hơn để ôn và luyện thi chứng chỉ', '2022-12-31 23:00:00', '1970-01-01 00:00:00', 'Processing', NULL),
-(11, 5, 'Hoàn thành các chứng chỉ liên quan đến AWS trong năm nay', 'Chỉ cần tập trung nhiều vào việc ôn thi chứng chỉ là được', '2022-12-31 23:00:00', '1970-01-01 00:00:00', 'Processing', NULL),
-(12, 6, 'Hoàn thành chứng chỉ AWS Certified Solutions Architect – Associate trước tháng 10 năm 2022', 'Dành thời gian ôn luyện ít nhất mỗi ngày 30 phút - 1 tiếng. Vào thứ 7, CN thì ôn nhiều hơn (>=2 tiếng)', '2022-09-30 23:59:00', '1970-01-01 00:00:00', 'Processing', NULL);
-
--- --------------------------------------------------------
-
---
--- Cấu trúc bảng cho bảng `request ot`
---
-
-CREATE TABLE `request ot` (
-  `ROT_ID` int(11) NOT NULL COMMENT 'Mã của 1 request OT, là trường tự tăng',
-  `EMPLOYEE_ID` int(11) NOT NULL COMMENT 'Chứa ID của nhân viên tạo ra request OT',
-  `MANAGER_ID` int(11) NOT NULL COMMENT 'Chứa ID của nhân viên quản lý cấp 1 của nhân viên tạo ra request',
-  `REASON` varchar(5000) COLLATE utf8mb4_vietnamese_ci NOT NULL COMMENT 'Lý do nhân viên muốn làm việc OT',
-  `CREATE_DATE` datetime NOT NULL DEFAULT CURRENT_TIMESTAMP COMMENT 'Thời gian tạo request OT',
-  `UPDATE_DATE` datetime NOT NULL DEFAULT '1970-01-01 00:00:00' COMMENT 'Thời gian cập nhật thông tin của request OT gần nhất. Mặc định là 1970-01-01 00:00:00, khi được cập nhật lại, thời gian này phải >= CREATE_DATE',
-  `STATUS` varchar(255) COLLATE utf8mb4_vietnamese_ci NOT NULL DEFAULT 'Draft' COMMENT 'Trạng thái xử lý của request OT. Gồm 1 trong 5 trạng thái: Draft, Pending, Approved, Rejected, Cancelled. Được điền tự động bởi hệ thống, nhân viên không thể sửa.',
-  `MANAGER_COMMENT` varchar(5000) COLLATE utf8mb4_vietnamese_ci DEFAULT 'None' COMMENT 'Ghi lí do quản lý cấp 1 từ chối request OT. Nếu trường này có thông tin, trạng thái của request phải là "Rejected", mặc định là None',
-  `START_DATE` date NOT NULL DEFAULT '1970-01-01' COMMENT 'Ngày bắt đầu dự kiến làm việc OT',
-  `ESTIMATED_HOURS` decimal(11,0) NOT NULL DEFAULT '0' COMMENT 'Tổng thời gian dự kiến sẽ làm việc OT. Thời gian này được tính dựa trên chi tiết request ot từ bảng request ot detail',
-  `END_DATE` date NOT NULL DEFAULT '1970-01-01' COMMENT 'Ngày kết thúc dự kiến làm việc OT. Mặc định có giá trị là 1970-01-01, khi được cập nhật lại, thời gian này phải >= Ngày bắt đầu OT',
-  `UNSUBMIT_REASON` varchar(5000) COLLATE utf8mb4_vietnamese_ci DEFAULT 'None' COMMENT 'Lý do nhân viên muốn hủy gửi (unsubmit) request OT. Nếu trường này có thông tin, trạng thái của request bắt buộc là Cancelled, mặc định là None',
-  `NOTIFICATION_FLAG` tinyint(4) NOT NULL DEFAULT '0' COMMENT 'Nhân viên khi tạo request OT chọn "Yes" hay "No" cho mục "Email follow up". 0 là No, 1 là Yes'
-) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_vietnamese_ci COMMENT='Bảng này cho biết thông tin của 1 request OT';
-
---
--- Đang đổ dữ liệu cho bảng `request ot`
---
-
-INSERT INTO `request ot` (`ROT_ID`, `EMPLOYEE_ID`, `MANAGER_ID`, `REASON`, `CREATE_DATE`, `UPDATE_DATE`, `STATUS`, `MANAGER_COMMENT`, `START_DATE`, `ESTIMATED_HOURS`, `END_DATE`, `UNSUBMIT_REASON`, `NOTIFICATION_FLAG`) VALUES
-(2, 15, 6, 'Làm không kịp nên tăng ca để kịp tiến độ dự án mới', '2022-07-17 12:08:03', '2022-07-18 12:08:03', 'Approved', 'None', '2022-07-16', '4', '2022-07-16', 'None', 1),
-(3, 14, 6, 'Anh có việc gia đình cần nghỉ 1 tuần nên anh cần tăng ca để làm bù để kịp tiến độ dự án.', '2022-07-15 12:12:35', '2022-07-15 13:12:35', 'Approved', 'None', '2022-08-01', '6', '2022-08-03', 'None', 1),
-(4, 8, 6, 'Dự án Alola cần bàn giao cho khách hàng gấp vào cuối tháng 8 nên em cần OT để kịp tiến độ', '2022-07-17 12:14:54', '2025-07-22 02:21:13', 'Pending', '', '2022-07-25', '12', '2022-07-25', '', 1),
-(5, 8, 6, 'Em xin OT để tuần sau em nghỉ đi chơi với người yêu', '2022-07-16 12:14:54', '2022-07-17 15:25:54', 'Cancelled', 'None', '2022-08-15', '4', '2022-08-18', 'Lí do em ghi còn chưa thật sự hợp lí, em xin được thu hồi request để gửi lại request mới', 0),
-(12, 15, 6, 'demo thử lần 2', '1970-01-01 00:00:00', '2025-07-22 10:17:49', 'Pending', '', '2022-07-25', '8', '2022-07-27', '', 1),
-(13, 15, 6, 'demo lan 4', '2022-07-25 18:02:19', '2025-07-22 11:02:19', 'Draft', '', '2022-07-25', '0', '2022-07-25', '', 0),
-(14, 15, 6, 'demo ', '2022-07-25 20:48:25', '2025-07-22 01:48:25', 'Pending', '', '2022-07-25', '0', '2022-07-25', '', 0),
-(17, 8, 6, 'lo xoa re quyes hehe', '2022-07-25 20:55:39', '2025-07-22 02:22:42', 'Pending', '', '2022-07-25', '10', '2022-07-25', '', 1);
-
--- --------------------------------------------------------
-
---
--- Cấu trúc bảng cho bảng `request ot detail`
---
-
-CREATE TABLE `request ot detail` (
-  `ROTDETAIL_ID` int(11) NOT NULL COMMENT 'ID của một chi tiết request OT. Một request OT có thể có nhiều thông tin chi tiết',
-  `ROT_ID` int(11) NOT NULL COMMENT 'ID của request OT mà chi tiết request OT thuộc về. Tham chiếu từ bảng request ot',
-  `DATE` date NOT NULL DEFAULT '1970-01-01' COMMENT 'Ngày nhân viên làm việc OT',
-  `HOUR` decimal(10,0) NOT NULL DEFAULT '0' COMMENT 'Số giờ trong 1 ngày mà nhân viên đó làm việc OT. Không được quá 4 giờ trong 1 ngày'
-) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_vietnamese_ci COMMENT='Bảng này cho biết thông tin của một CHI TIẾT request OT';
-
---
--- Đang đổ dữ liệu cho bảng `request ot detail`
---
-
-INSERT INTO `request ot detail` (`ROTDETAIL_ID`, `ROT_ID`, `DATE`, `HOUR`) VALUES
-(6, 5, '2022-08-15', '1'),
-(7, 5, '2022-08-16', '1'),
-(10, 2, '2022-07-16', '4'),
-(12, 3, '2022-08-02', '2'),
-(13, 3, '2022-08-03', '1'),
-(34, 12, '2022-07-25', '3'),
-(35, 12, '2022-07-26', '4'),
-(36, 12, '2022-07-26', '2'),
-(37, 13, '2022-07-25', '1'),
-(38, 14, '2022-07-25', '4'),
-(101, 4, '2022-07-25', '1'),
-(102, 4, '2022-07-25', '1'),
-(105, 17, '2022-07-25', '3'),
-(106, 17, '2022-07-26', '4');
-
 --
 -- Chỉ mục cho các bảng đã đổ
 --
@@ -385,36 +251,6 @@ ALTER TABLE `pa_feedback`
   ADD KEY `FK_Feedback_Manager` (`EMPLOYEE_MANAGER`);
 
 --
--- Chỉ mục cho bảng `pa_goal`
---
-ALTER TABLE `pa_goal`
-  ADD PRIMARY KEY (`PAGOAL_ID`),
-  ADD KEY `FK_Employee_Create` (`EMPLOYEECREATE_ID`),
-  ADD KEY `FK_Employee_Manager` (`MANAGER_ID`);
-
---
--- Chỉ mục cho bảng `pa_goal detail`
---
-ALTER TABLE `pa_goal detail`
-  ADD PRIMARY KEY (`PAGOALDETAIL_ID`,`PAGOAL_ID`),
-  ADD KEY `FK_PAGoal_Related` (`PAGOAL_ID`);
-
---
--- Chỉ mục cho bảng `request ot`
---
-ALTER TABLE `request ot`
-  ADD PRIMARY KEY (`ROT_ID`),
-  ADD KEY `FK_EmployeeCreate` (`EMPLOYEE_ID`),
-  ADD KEY `FK_Appraiser_Manage` (`MANAGER_ID`);
-
---
--- Chỉ mục cho bảng `request ot detail`
---
-ALTER TABLE `request ot detail`
-  ADD PRIMARY KEY (`ROTDETAIL_ID`,`ROT_ID`),
-  ADD KEY `FK_OTReq_Related` (`ROT_ID`);
-
---
 -- AUTO_INCREMENT cho các bảng đã đổ
 --
 
@@ -447,30 +283,6 @@ ALTER TABLE `leave_type`
 --
 ALTER TABLE `pa_feedback`
   MODIFY `PAFB_ID` int(11) NOT NULL AUTO_INCREMENT COMMENT 'ID của một thông tin feedback, là trường tự tăng', AUTO_INCREMENT=7;
-
---
--- AUTO_INCREMENT cho bảng `pa_goal`
---
-ALTER TABLE `pa_goal`
-  MODIFY `PAGOAL_ID` int(11) NOT NULL AUTO_INCREMENT COMMENT 'ID của một PA form. Mỗi PA Form sẽ có nhiều thông tin mục tiêu ', AUTO_INCREMENT=7;
-
---
--- AUTO_INCREMENT cho bảng `pa_goal detail`
---
-ALTER TABLE `pa_goal detail`
-  MODIFY `PAGOALDETAIL_ID` int(11) NOT NULL AUTO_INCREMENT COMMENT 'ID của một chi tiết mục tiêu (goal). Một form PA có thể có nhiều thông tin chi tiết mục tiêu', AUTO_INCREMENT=13;
-
---
--- AUTO_INCREMENT cho bảng `request ot`
---
-ALTER TABLE `request ot`
-  MODIFY `ROT_ID` int(11) NOT NULL AUTO_INCREMENT COMMENT 'Mã của 1 request OT, là trường tự tăng', AUTO_INCREMENT=27;
-
---
--- AUTO_INCREMENT cho bảng `request ot detail`
---
-ALTER TABLE `request ot detail`
-  MODIFY `ROTDETAIL_ID` int(11) NOT NULL AUTO_INCREMENT COMMENT 'ID của một chi tiết request OT. Một request OT có thể có nhiều thông tin chi tiết', AUTO_INCREMENT=110;
 
 --
 -- Các ràng buộc cho các bảng đã đổ
@@ -509,18 +321,6 @@ ALTER TABLE `pa_feedback`
   ADD CONSTRAINT `FK_Employee_Being_Feedback` FOREIGN KEY (`EMPLOYEE_BEINGFEEDBACK_ID`) REFERENCES `employee` (`EMPLOYEE_ID`),
   ADD CONSTRAINT `FK_Employee_Feedback` FOREIGN KEY (`EMPLOYEE_FEEDBACK_ID`) REFERENCES `employee` (`EMPLOYEE_ID`),
   ADD CONSTRAINT `FK_Feedback_Manager` FOREIGN KEY (`EMPLOYEE_MANAGER`) REFERENCES `employee` (`EMPLOYEE_ID`);
-
---
--- Các ràng buộc cho bảng `pa_goal detail`
---
-ALTER TABLE `pa_goal detail`
-  ADD CONSTRAINT `FK_PAGoal_Related` FOREIGN KEY (`PAGOAL_ID`) REFERENCES `pa_goal` (`PAGOAL_ID`);
-
---
--- Các ràng buộc cho bảng `request ot detail`
---
-ALTER TABLE `request ot detail`
-  ADD CONSTRAINT `FK_OTReq_Related` FOREIGN KEY (`ROT_ID`) REFERENCES `request ot` (`ROT_ID`);
 COMMIT;
 
 /*!40101 SET CHARACTER_SET_CLIENT=@OLD_CHARACTER_SET_CLIENT */;
