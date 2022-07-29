@@ -4,7 +4,7 @@
         private $hostname = 'localhost';
         private $user = 'root';
         private $password = '';
-        private $nameDB = 'quan-ly-nhan-vien';
+        private $nameDB = 'quan-ly-nhan-vien-uc-2';
         
         // kết nối với DB
         function __construct(){

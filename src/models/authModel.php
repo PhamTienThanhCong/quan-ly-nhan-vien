@@ -8,7 +8,7 @@
 
             if (isset($user['EMPLOYEE_ID'])){
                 $_SESSION['id']     = $user['EMPLOYEE_ID'];
-                $_SESSION['name']   = $user['USERNAME'];
+                $_SESSION['name']   = $user['NAME'];
                 $_SESSION['avatar'] = $user['AVATAR_URL'];
                 $_SESSION['role']   = $user['ROLE'];
                 return true;

@@ -20,7 +20,6 @@ function showNewOTRequest () {
         document.getElementById('REASON_EMPLOYEE').value = "";
     }
     document.getElementById('STATUS_REQUEST').value = "Draft";
-    document.getElementById('status-draft').disabled = false;
 }
 
 function hideNewOTRequest () {
@@ -67,8 +66,7 @@ function showNotification(title, message) {
 }
 
 function hiddenNotification() {
-    hideNewOTRequest();
-    modal_notification.classList.remove('open')
+    modal_notification.classList.remove('open');
 }
 
 function hiddenNotificationAll(){

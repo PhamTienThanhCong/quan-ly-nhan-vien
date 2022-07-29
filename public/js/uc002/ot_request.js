@@ -1,20 +1,58 @@
 const root = document.getElementById('root');
 var type = "EMPLOYEE_ID";
-var url_get = api_uc002 + `/ot_requests&${type}=${id_user}`
+var page = 1;
+var one_page = 5;
+var all_page = 0;
+var url_get_main = api_uc002 + `/ot_requests&${type}=${id_user}`
 var new_data = [];
 var OTRequest_ID = 0;
 const formRequest = document.getElementById('form-post-request');
 
 var data_request_ot = [];
+
+function update_page(){
+    var pass_page = (page-1)*one_page;
+    url_get_main = api_uc002 + `/ot_requests&${type}=${id_user}&limit=${one_page}&offset=${pass_page}`;
+}
+
+function edit_page(data_page){
+    var all_columns = data_page.count;
+    all_page = Math.ceil(all_columns / one_page);
+    if (page > all_page){
+        page = all_page;
+    }
+    document.getElementById("current_page").textContent = page.toString();
+    document.getElementById("all_page").textContent = all_page.toString();
+}
+
+function next_page(type){
+    if (type == "up"){
+        var action = 1;
+    }else if (type == "down"){
+        var action = -1;
+    }
+    page += action;
+    if (page <= all_page && page > 0){
+        update_page();
+        generate_data_from_request();
+    }else{
+        page -= action; 
+    }
+}
+
+update_page();
+
 function generate_data(data = []){
     root.innerHTML = `
     <div class="history">
         <div class="header">
             <h4></h4>
             <div class="header-page">
-                <i class="fa-solid fa-angle-left"></i>
-                <span>1/1</span>
-                <i class="fa-solid fa-angle-right"></i>
+                <i onclick="next_page('down')" class="fa-solid fa-angle-left" style="cursor: pointer;"></i>
+                <span id="current_page">1</span>
+                <span> / </span>
+                <span id="all_page">1</span>
+                <i onclick="next_page('up')" class="fa-solid fa-angle-right" style="cursor: pointer;"></i>
             </div>
         </div>
         <table style="background-color: white" id="history">
@@ -49,6 +87,7 @@ function generate_data(data = []){
         </tr>
         `;
     }
+    edit_page(data_request_ot.data.metadata.resultset);
 }
 
 function edit_ot_request(id, status){
@@ -65,7 +104,9 @@ function edit_ot_request(id, status){
                     update_profile_manager(new_data.MANAGER_ID);
                     insert_request_ot_detail(new_data.OTRequestDetails);
                     update_info_request_ot(new_data);
-                    document.getElementById('submit-btn-text').innerHTML = "Unsubmit";
+                    if (new_data.STATUS == "Pending"){
+                        document.getElementById('submit-btn-text').innerHTML = "Unsubmit";
+                    }
                     document.getElementById('OTRequest_ID').value = id;
                     modal_new_rq.classList.add('open');
                 }
@@ -85,16 +126,16 @@ function delete_an_request_ot(id){
         dataType: "json",
         success: function (response) {
             if (response.success){
-                generate_data_from_request();
+                generate_data_from_request(false);
             }
         }
     });
 }
 
-function generate_data_from_request(){
+function generate_data_from_request(check){
     $.ajax({
         type: "GET",
-        url: url_get,
+        url: url_get_main,
         data: "data",
         dataType: "json",
         success: function (response) {
@@ -112,13 +153,14 @@ function generate_data_from_request(){
 }
 
 $(document).ready(function () {
-    generate_data_from_request();
+    generate_data_from_request(false);
 });
 
 formRequest.addEventListener('submit', function (e) {
     e.preventDefault();
     var id = document.getElementById('OTRequest_ID').value;
     var values = $(this).serialize();
+    var status = document.getElementById('STATUS_REQUEST').value;
     if (id == 0){
         var url_post = `${api_uc002}/create_ot`;
         $.ajax({
@@ -128,8 +170,13 @@ formRequest.addEventListener('submit', function (e) {
             dataType: "json",
             success: function (response) {
                 if (response.success) {
-                    generate_data_from_request();
-                    showNotification("Submit successfully", "Congratulations! You submit the OT request successfully. You can go back to main to see the request.");
+                    generate_data_from_request(false);
+                    if (status == "Reject"){
+                        showNotification("Submit successfully", "Congratulations! You submit the OT request successfully. You can go back to main to see the request.");
+                        edit_ot_request(response.data["ROT_ID"], "Pending");
+                    }else{
+                        edit_ot_request(response.data["ROT_ID"], "Draft");
+                    }
                 }
             }
         });
@@ -141,8 +188,11 @@ formRequest.addEventListener('submit', function (e) {
             data: values,
             dataType: "json",
             success: function (response) {
+                if (new_data.STATUS == "Draft"){
+                    showNotification("Submit successfully", "Congratulations! You submit the OT request successfully. You can go back to main to see the request.");
+                }
                 edit_ot_request(new_data.ROT_ID, new_data.STATUS);
-                generate_data_from_request();
+                generate_data_from_request(false);
             }
         });
     }
@@ -159,9 +209,10 @@ document.getElementById('model-unsubmit-request').addEventListener('submit', fun
         data: values,
         dataType: "json",
         success: function (response) {
-            generate_data_from_request();
+            generate_data_from_request(false);
             reset_request_ot_detail();
             hiddenModalUnSubmit();
+            hideNewOTRequest();
             showNotification("Unsubmit successfully", "Congratulations! You have unsubmit request successfully. We have emailed to your appraiser about your unsubmission.")
         }
     });

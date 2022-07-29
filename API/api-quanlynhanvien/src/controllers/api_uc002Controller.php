@@ -55,7 +55,7 @@
             
             if ($ROT_ID != 0){
                 if ($model->createOtDetail($ROT_ID, $OTRequestDetails)){
-                    echo $this->data_export(200,"OT Request Created Successfully", $summary, null, true);
+                    echo $this->data_export(200,"OT Request Created Successfully", $summary, ["ROT_ID" => $ROT_ID], true);
                 }else{
                     echo $this->data_export(400,"Missing Required Information", $summary, null, false);
                 }
@@ -239,7 +239,7 @@
         // http://localhost/udpt-quanlynhanvien/api_uc002/ot_requests&limit=5&offset=2&sort_by=-create_date
         public function ot_requests() {
             $summary = "Get All Employee’s Request OT Information Sort By CREATE_DATE DESC AND PAGINATE";
-            $limit = 10;
+            $limit = 5;
             $offset = 0;
             $order_column = "ROT_ID";
             $sort_by = "desc";

@@ -2,6 +2,7 @@ var data_user = [];
 var data_manager = [];
 var table_ot = document.getElementById('table-ot-detail');
 var table_count = 1;
+var total_hours = 0;
 
 Date.prototype.toDateInputValue = (function() {
     var local = new Date(this);
@@ -17,6 +18,21 @@ function date_now(){
 function formatDate (date) {  
     return date.split("-").reverse().join("-");;
 }
+function update_hours(){
+    total_hours = 0;
+    var day = [];
+    for(var i=1; i < table_count ; i++ ){
+        var element = document.getElementById(`hour-ot-${i}`);
+        if (element){
+            total_hours += parseInt(element.value);
+            day.push(document.getElementById(`date-ot-${i}`).value);
+        }
+    }
+    day = day.sort();
+    document.getElementById('start-date').value = day[0];
+    document.getElementById('end-date').value = day[day.length - 1];
+    document.getElementById('estimated_hours').value = total_hours;
+}
 
 function user_profile_update(data, type){
     document.getElementById(`${type}_NAME`).value = data.NAME;
@@ -27,6 +43,7 @@ function user_profile_update(data, type){
 
 function deleteAnValue(id){
     document.getElementById(`colum-${id}`).remove();
+    update_hours();
 }
 
 function update_profile_manager(id){
@@ -63,14 +80,13 @@ function update_profile_user(id){
 function update_info_request_ot(data){
     document.getElementById('start-date').value = data.START_DATE.split(' ')[0];
     document.getElementById('end-date').value = data.END_DATE.split(' ')[0];
-    document.getElementById('today-date').value = data.CREATE_DATE.split(' ')[0];
+    document.getElementById('today-date').value = data.CREATE_DATE;
     document.getElementById('estimated_hours').value = data.ESTIMATED_HOURS;
     document.getElementById('NOTIFICATION_FLAG').value = data.NOTIFICATION_FLAG;
     document.getElementById('STATUS_REQUEST').value = data.STATUS;
     document.getElementById('OTRequest_ID').value = data.id;
     if(data.STATUS == "Pending"){
         document.getElementById('STATUS_REQUEST').value = "Reject";
-        document.getElementById('status-draft').disabled = true;
     }
     document.getElementById('REASON_EMPLOYEE').value = data.REASON;
 }
@@ -96,13 +112,14 @@ function insert_request_ot_detail(data){
                     <i style="cursor: pointer;" onclick="deleteAnValue(${table_count})" class="fa-solid fa-trash-can"></i>
                     <i style="cursor: not-allowed;" class="fa-solid fa-pen"></i>
                 </td>
-                <input type="hidden" name="date-ot-${table_count}" value="${data[i].DATE}">
-                <input type="hidden" name="hour-ot-${table_count}" value="${data[i].HOUR}">
+                <input id="date-ot-${table_count}" type="hidden" name="date-ot-${table_count}" value="${data[i].DATE}">
+                <input id="hour-ot-${table_count}" type="hidden" name="hour-ot-${table_count}" value="${data[i].HOUR}">
             </tr>
         `
         table_count++;
     }
     document.getElementById('number-ot').value = table_count;
+    update_hours();
 }
 
 function delete_ot_request(id, status){
@@ -126,8 +143,8 @@ function hoursActive(){
                 <i style="cursor: pointer;" onclick="deleteAnValue(${table_count})" class="fa-solid fa-trash-can"></i>
                 <i style="cursor: not-allowed;" class="fa-solid fa-pen"></i>
                 </td>
-                <input type="hidden" name="date-ot-${table_count}" value="${date_ot}">
-                <input type="hidden" name="hour-ot-${table_count}" value="${hour_ot}">
+                <input id="date-ot-${table_count}" type="hidden" name="date-ot-${table_count}" value="${date_ot}">
+                <input id="hour-ot-${table_count}" type="hidden" name="hour-ot-${table_count}" value="${hour_ot}">
             </tr>
         `;
         table_count++;
@@ -136,6 +153,7 @@ function hoursActive(){
         showError("You cannnot enter > 4 hours/day");
     }
     document.getElementById('request-time').value = 1;
+    update_hours();
 }
 
 reset_request_ot_detail()
@@ -146,9 +164,15 @@ $(document).ready(function () {
 
 document.getElementById('submit-btn-text').addEventListener('click', function(e){
     if (document.getElementById('OTRequest_ID').value == "0"){
+        document.getElementById('STATUS_REQUEST').value = "Reject";
         document.getElementById('submit-btn-save').click();
     }else{
-        showModalUnSubmit();
-        document.getElementById('modal-unsubmit-request-text').value = "";
+        if (new_data.STATUS == "Pending"){
+            showModalUnSubmit();
+            document.getElementById('modal-unsubmit-request-text').value = "";
+        }else{
+            document.getElementById('STATUS_REQUEST').value = "Reject";
+            document.getElementById('submit-btn-save').click();
+        }
     }
 })

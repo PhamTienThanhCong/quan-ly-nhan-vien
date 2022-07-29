@@ -62,15 +62,15 @@
                 <div class="form flex_start">
                     <div class="date">
                         <p>start date</p>
-                        <input type="date" name="START_DATE" id="start-date" required>
+                        <input type="date" name="START_DATE" id="start-date" required readonly="readonly">
                     </div>
                     <div class="date">
                         <p>end date</p>
-                        <input type="date" name="END_DATE" id="end-date" required>
+                        <input type="date" name="END_DATE" id="end-date" required readonly="readonly">
                     </div>
                     <div class="total">
                         <p>total estimated hours</p>
-                        <input type="number" name="ESTIMATED_HOURS" id="estimated_hours" value="0" required>
+                        <input type="number" name="ESTIMATED_HOURS" id="estimated_hours" value="0" required readonly="readonly">
                     </div>
                     <div class="fl_up">
                         <p>email follow up</p>
@@ -81,10 +81,11 @@
                     </div>
                     <div class="status">
                         <p>status</p>
-                        <select name="STATUS" id="STATUS_REQUEST">
+                        <!-- <select name="STATUS" id="STATUS_REQUEST" readonly>
                             <option id="status-draft" value="Draft">Draft</option>
                             <option value="Reject">Reject</option>
-                        </select>
+                        </select> -->
+                        <input type="text" name="STATUS" id="STATUS_REQUEST" readonly>
                     </div>
                     <div class="date">
                         <p>created date</p>

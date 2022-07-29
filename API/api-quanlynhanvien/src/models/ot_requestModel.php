@@ -125,7 +125,7 @@ class ot_requestModel extends ConnectDB{
     }
     // Xem một thông tin OT Request detail bất kỳ
     public function get_request_ot_detail($ROT_ID){
-        $sql = "SELECT * FROM `request ot detail` WHERE `ROT_ID` = '$ROT_ID'";
+        $sql = "SELECT * FROM `request ot detail` WHERE `ROT_ID` = '$ROT_ID' ORDER BY `DATE` ASC";
         $data = mysqli_query($this->connection, $sql);
         $ot_request = [];
         foreach($data as $index=>$d){

@@ -20,7 +20,7 @@
             <!-- <img src="<?= $host_name ?>/public/img/image/user.png" width="120px" height="120px" alt=""> -->
             <img style="object-fit: cover; aline-item: center" src="<?= $_SESSION['avatar'] ?>" width="120px" height="120px" alt="">
             <p class="user-title">
-                <?= $_SESSION['role'] ?>
+                <?= $_SESSION['name'] ?>
             </p>
             <p class="user-id">
                 <?= $_SESSION['id'] ?>
