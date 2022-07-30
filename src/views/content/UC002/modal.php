@@ -4,7 +4,7 @@
     <input type="hidden" name="OTRequest_ID" id="OTRequest_ID" value="0">
 
         <div class="modal__heading">
-            <h1>create new OT request</h1>
+            <h1 id="title-modal">create new OT request</h1>
             <div class="button">
                 <button type="button" id="submit-btn-text" class="btn">submit</button>
                 <button type="submit" id="submit-btn-save" class="btn">save</button>
@@ -81,10 +81,6 @@
                     </div>
                     <div class="status">
                         <p>status</p>
-                        <!-- <select name="STATUS" id="STATUS_REQUEST" readonly>
-                            <option id="status-draft" value="Draft">Draft</option>
-                            <option value="Reject">Reject</option>
-                        </select> -->
                         <input type="text" name="STATUS" id="STATUS_REQUEST" readonly>
                     </div>
                     <div class="date">
@@ -110,7 +106,7 @@
                         <p>hours</p>
                         <input type="number" max="4" min="1" name="" id="request-time" value="1" required>
                     </div>
-                    <button class="btn" type="button" onclick="hoursActive()">Add OT details</button>
+                    <button class="btn" id="submit-ot-request-detail" type="button" onclick="hoursActive()">Add OT details</button>
                 </div>
             </div>
 

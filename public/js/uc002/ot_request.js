@@ -109,6 +109,7 @@ function edit_ot_request(id, status){
                     }
                     document.getElementById('OTRequest_ID').value = id;
                     modal_new_rq.classList.add('open');
+                    document.getElementById('title-modal').innerHTML = "edit OT request";
                 }
             }
         });
@@ -161,40 +162,44 @@ formRequest.addEventListener('submit', function (e) {
     var id = document.getElementById('OTRequest_ID').value;
     var values = $(this).serialize();
     var status = document.getElementById('STATUS_REQUEST').value;
-    if (id == 0){
-        var url_post = `${api_uc002}/create_ot`;
-        $.ajax({
-            type: "POST",
-            url: url_post,
-            data: values,
-            dataType: "json",
-            success: function (response) {
-                if (response.success) {
-                    generate_data_from_request(false);
-                    if (status == "Reject"){
-                        showNotification("Submit successfully", "Congratulations! You submit the OT request successfully. You can go back to main to see the request.");
-                        edit_ot_request(response.data["ROT_ID"], "Pending");
-                    }else{
-                        edit_ot_request(response.data["ROT_ID"], "Draft");
+    if (document.getElementById('estimated_hours').value != '0'){
+        if (id == 0){
+            var url_post = `${api_uc002}/create_ot`;
+            $.ajax({
+                type: "POST",
+                url: url_post,
+                data: values,
+                dataType: "json",
+                success: function (response) {
+                    if (response.success) {
+                        generate_data_from_request(false);
+                        if (status == "Pending"){
+                            edit_ot_request(response.data["ROT_ID"], "Pending");
+                            showNotification("Submit successfully", "Congratulations! You submit the OT request successfully. You can go back to main to see the request.");
+                        }else{
+                            edit_ot_request(response.data["ROT_ID"], "Draft");
+                        }
                     }
                 }
-            }
-        });
-    }else{
-        var url_post = `${api_uc002}/edit_request_ot/${id}`;
-        $.ajax({
-            type: "POST",
-            url: url_post,
-            data: values,
-            dataType: "json",
-            success: function (response) {
-                if (new_data.STATUS == "Draft"){
-                    showNotification("Submit successfully", "Congratulations! You submit the OT request successfully. You can go back to main to see the request.");
+            });
+        }else{
+            var url_post = `${api_uc002}/edit_request_ot/${id}`;
+            $.ajax({
+                type: "POST",
+                url: url_post,
+                data: values,
+                dataType: "json",
+                success: function (response) {
+                    if (new_data.STATUS == "Draft"){
+                        showNotification("Submit successfully", "Congratulations! You submit the OT request successfully. You can go back to main to see the request.");
+                    }
+                    edit_ot_request(new_data.ROT_ID, new_data.STATUS);
+                    generate_data_from_request(false);
                 }
-                edit_ot_request(new_data.ROT_ID, new_data.STATUS);
-                generate_data_from_request(false);
-            }
-        });
+            });
+        }
+    }else{
+        showError("The ot request details part cannot be left blank");
     }
 });
 

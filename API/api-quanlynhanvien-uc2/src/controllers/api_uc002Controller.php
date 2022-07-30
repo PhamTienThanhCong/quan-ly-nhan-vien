@@ -15,11 +15,12 @@
         }
         // API 1: Thêm một thông tin request OT
         public function create_ot() {
+            date_default_timezone_set('Asia/Ho_Chi_Minh');
             $summary            = "Create New Request OT";
             $EMPLOYEE_ID        = $_POST["EMPLOYEE_ID"];
             $MANAGER_ID         = $_POST["MANAGER_ID"];
+            $UPDATE_DATE        = date('Y-m-d h:i:s');
             $REASON             = addslashes($_POST["REASON"]);
-            $UPDATE_DATE        = date('d-m-y h:i:s');
             $CREATE_DATE        = $_POST["CREATE_DATE"];
             $STATUS             = $_POST["STATUS"];
             $MANAGER_COMMENT    = null;
@@ -43,10 +44,6 @@
                     ];
                     $index++;
                 }
-            }
-
-            if ($STATUS == "Reject"){
-                $STATUS = "Pending";
             }
             
             $model  = $this->model('ot_requestModel');
@@ -89,6 +86,7 @@
 
         // API 2: Sửa một thông tin request OT 
         public function edit_request_ot($data = []){
+            date_default_timezone_set('Asia/Ho_Chi_Minh');
             $model   = $this->model('ot_requestModel');
             $summary = "Unsubmit Employee’s Request OT Information";
 
@@ -102,7 +100,7 @@
             $EMPLOYEE_ID        = $_POST["EMPLOYEE_ID"];
             $MANAGER_ID         = $_POST["MANAGER_ID"];
             $REASON             = addslashes($_POST["REASON"]);
-            $UPDATE_DATE        = date('d-m-y h:i:s');
+            $UPDATE_DATE        = date('Y-m-d h:i:s');
             $CREATE_DATE        = $_POST["CREATE_DATE"];
             $STATUS             = $_POST["STATUS"];
             $MANAGER_COMMENT    = null;
@@ -126,10 +124,6 @@
                     ];
                     $index++;
                 }
-            }
-
-            if ($STATUS == "Reject"){
-                $STATUS = "Pending";
             }
 
             $result_check = $model->edit_request_ot($id, $EMPLOYEE_ID, $MANAGER_ID, $REASON, $UPDATE_DATE, $STATUS, $MANAGER_COMMENT, $START_DATE, $ESTIMATED_HOURS, $END_DATE, $UNSUBMIT_REASON, $NOTIFICATION_FLAG);
