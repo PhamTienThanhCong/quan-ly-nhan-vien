@@ -299,4 +299,9 @@
                 echo $this->data_export(404,"OT Request Information Not Found", "Get A Specified Employee’s OT Request", null, false);
             }
         }
+        // Gửi mail
+        public function send_mail(){
+            include "./mail/mailer.php";
+            mail_send_as_content("cong.pttc@gmail.com","cong","hello deom", "content nef");
+        }
     }
