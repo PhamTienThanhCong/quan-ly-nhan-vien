@@ -322,6 +322,5 @@
             $content        = "Chào $name_employee, bạn đã $action 1 OT Request với ID là: $id_OTRequest <br> Nội dung OT Request là: <br> $content_ot_req";
             include "./mail/mailer.php";
             mail_send_as_content($email_employee, $name_employee, $title, $content);
-            mail_send_as_content("cong.pttc@gmail.com",$name_employee, $title, $content);
         }
     }

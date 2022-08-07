@@ -126,7 +126,7 @@ function delete_an_request_ot(id){
         var email_employee  = document.getElementById('EMPLOYEE_EMAIL').value;
         var id_OTRequest    = id;
         var action2         = "Xóa";
-        send_mail_employee(id_employee, name_employee, email_employee, id_OTRequest, action2, null);
+        send_mail_employee(id_employee, name_employee, email_employee, id_OTRequest, action2, "Không thể cung cấp nội dung khi đã xóa");
     }
     $.ajax({
         type: "GET",
