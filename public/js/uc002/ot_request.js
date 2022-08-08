@@ -266,7 +266,7 @@ document.getElementById('model-unsubmit-request').addEventListener('submit', fun
         var name_employee   = document.getElementById('EMPLOYEE_NAME').value;
         var email_employee  = document.getElementById('EMPLOYEE_EMAIL').value;
         var id_OTRequest    = document.getElementById('OTRequest_ID').value;
-        var action1         = document.getElementById('STATUS_REQUEST').value;
+        var action1         = "Canceled";
         var action2         = "Hủy đăng kí";
         send_mail_employee(id_employee, name_employee, email_employee, id_OTRequest, action2, get_content_ot_request(action1));
     }
