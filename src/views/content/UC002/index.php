@@ -16,11 +16,11 @@
 require_once "./src/views/content/UC002/modal.php"
 ?>
 
-<script>
+<!-- <script>
     const id_user   = <?= $_SESSION["id"] ?>;
     const api_uc002 = "<?= $api_uc002 ?>";
     const host_name = "<?= $host_name ?>";
-</script>
+</script> -->
 
 <script src="<?= $host_name ?>/public/js/uc002/model.js"></script>
 <script src="<?= $host_name ?>/public/js/uc002/ot_request.js"></script>

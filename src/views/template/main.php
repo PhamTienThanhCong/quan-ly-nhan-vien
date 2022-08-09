@@ -38,6 +38,13 @@
         </div>
     </nav>
 
+    <script>
+        const id_user       = <?= $_SESSION["id"] ?>;
+        const api_uc002     = "<?= $api_uc002 ?>";
+        const uc0131_132    = "<?= $uc0131_132 ?>";
+        const host_name     = "<?= $host_name ?>";
+    </script>
+
     <?php 
         require_once "./src/views/content/" . $view . ".php"
     ?>

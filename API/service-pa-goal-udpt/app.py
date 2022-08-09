@@ -5,6 +5,7 @@ from flask_mysqldb import MySQL
 import smtplib
 import ssl
 from email.message import EmailMessage
+from flask_cors import CORS
 
 mysql = MySQL()
 app = Flask(__name__)
@@ -19,6 +20,7 @@ app.config['MYSQL_HOST'] = 'localhost'
 
 mysql.init_app(app)
 
+CORS(app)
 
 @app.route('/api/uc0131_132/get-pa-goals', methods=['POST', 'GET'])
 def get_pa_goals():
