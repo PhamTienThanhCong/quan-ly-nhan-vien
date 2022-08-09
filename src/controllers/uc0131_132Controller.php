@@ -13,13 +13,13 @@
             $this->middleware();
             $this->view("main","UC0131_132/myPAgoal",[]);
         }
-        public function self_result(){
+        public function self_result($data = []){
             $this->middleware();
-            $this->view("main","UC0131_132/self_result",[]);
+            $this->view("main","UC0131_132/self_result",[$data[0]]);
         }
-        public function self_result_view(){
+        public function self_result_view($data = []){
             $this->middleware();
-            $this->view("main","UC0131_132/self_result_view",[]);
+            $this->view("main","UC0131_132/self_result_view",[$data[0]]);
         }
     }
 ?>

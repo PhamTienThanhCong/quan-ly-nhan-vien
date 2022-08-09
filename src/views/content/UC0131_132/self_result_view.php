@@ -23,7 +23,7 @@
                 <button class="btn btn-cancel">cancel</button>
             </a>
         </div>
-        <!-- <div class="add-new">
+        <div class="add-new">
             <div class="js-add-new">
                 <i class="fa-solid fa-circle-plus js-create"></i>
                 <span>add a new goal</span>
@@ -32,113 +32,60 @@
                 <button class="btn-delete js-del-re-all">delete</button>
                 <button class="delete-all">delete all</button>
             </div>
-        </div> -->
-        <div class="nothing-content">
-            <img src="<?= $host_name ?>/public/img/image/oh crap.png" width="300" height="210" alt="">
-            <p>you don't have any goal. you can create a new one!</p>
         </div>
-    </div>
-
-    <div class="goal-name-box">
-        <!-- <div class="goal-name">
-            <div class="goal-name-checkbox">
-                <input type="checkbox" name="" id="">
-                <h4>goal name</h4>
-                <p class="pending">status: pending</p>
-            </div>
-            <div class="time">
-                <p>due date: 2022-10-31</p>
-                <p>complete date: none</p>
-            </div>
-            <div class="func">
-                <button>see goal</button>
-                <button class="edit-error">edit goal</button>
-                <button class="js-del-re">delete goal</button>
-            </div>
-        </div>
-        <div class="goal-name">
-            <div class="goal-name-checkbox">
-                <input type="checkbox" name="" id="">
-                <h4>goal name</h4>
-                <p class="pending">status: pending</p>
-            </div>
-            <div class="time">
-                <p>due date: 2022-10-31</p>
-                <p>complete date: none</p>
-            </div>
-            <div class="func">
-                <button>see goal</button>
-                <button class="edit-error">edit goal</button>
-                <button class="js-del-re">delete goal</button>
-            </div>
-        </div>
-        <div class="goal-name">
-            <div class="goal-name-checkbox">
-                <input type="checkbox" name="" id="">
-                <h4>goal name</h4>
-                <p class="pending">status: pending</p>
-            </div>
-            <div class="time">
-                <p>due date: 2022-10-31</p>
-                <p>complete date: none</p>
-            </div>
-            <div class="func">
-                <button>see goal</button>
-                <button class="edit-error">edit goal</button>
-                <button class="js-del-re">delete goal</button>
-            </div>
-        </div>
-        <div class="goal-name">
-            <div class="goal-name-checkbox">
-                <input type="checkbox" name="" id="">
-                <h4>goal name</h4>
-                <p class="pending">status: pending</p>
-            </div>
-            <div class="time">
-                <p>due date: 2022-10-31</p>
-                <p>complete date: none</p>
-            </div>
-            <div class="func">
-                <button>see goal</button>
-                <button class="edit-error">edit goal</button>
-                <button class="js-del-re">delete goal</button>
-            </div>
-        </div>
-        <div class="goal-name">
-            <div class="goal-name-checkbox">
-                <input type="checkbox" name="" id="">
-                <h4>goal name</h4>
-                <p class="pending">status: pending</p>
-            </div>
-            <div class="time">
-                <p>due date: 2022-10-31</p>
-                <p>complete date: none</p>
-            </div>
-            <div class="func">
-                <button>see goal</button>
-                <button class="edit-error">edit goal</button>
-                <button class="js-del-re">delete goal</button>
-            </div>
-        </div>
-        <div class="goal-name">
-            <div class="goal-name-checkbox">
-                <input type="checkbox" name="" id="">
-                <h4>goal name</h4>
-                <p class="pending">status: pending</p>
-            </div>
-            <div class="time">
-                <p>due date: 2022-10-31</p>
-                <p>complete date: none</p>
-            </div>
-            <div class="func">
-                <button>see goal</button>
-                <button class="edit-error">edit goal</button>
-                <button class="js-del-re">delete goal</button>
-            </div>
-        </div> -->
         <!-- <div class="nothing-content">
             <img src="<?= $host_name ?>/public/img/image/oh crap.png" width="300" height="210" alt="">
             <p>you don't have any goal. you can create a new one!</p>
         </div> -->
     </div>
+
+    <div class="goal-name-box" id="detail-goal-name">
+
+    </div>
 </div>
+
+<div class="modal-new-goal js-modal-new-goal" id="model-view">
+    <div class="modal-contain js-modal-contain-new-goal">
+        <h1>see a goal</h1>
+        <div class="time">
+            <div class="due-date">
+                <p>due date</p>
+                <input type="date" name="" id="" readonly>
+            </div>
+            <div class="due-date">
+                <p>completed date</p>
+                <input type="date" name="" id="" readonly>
+            </div>
+            <div class="select">
+                <p>status</p>
+                <select name="" id="" readonly>
+                    <option value="">processing</option>
+                </select>
+            </div>
+        </div>
+
+        <div class="input-form">
+            <div class="input">
+                <p>goal/objects name</p>
+                <input type="text" placeholder="type something here" readonly>
+            </div>
+            <div class="input">
+                <p>action/steps</p>
+                <input type="text" placeholder="type something here" readonly>
+            </div>
+            <div class="input">
+                <p>comment</p>
+                <input type="text" placeholder="type something here" readonly>
+            </div>
+        </div>
+
+        <div class="button">
+            <a href="#" onclick="hideNewGoalCreate()" class="btn cancel js-cancel">cancel</a>
+        </div>
+    </div>
+</div>
+
+<script>
+    var pa_goal_id = <?= $data[0] ?>
+</script>
+<script src="<?= $host_name ?>/public/js/UC0131_132/call_api_view.js"></script>
