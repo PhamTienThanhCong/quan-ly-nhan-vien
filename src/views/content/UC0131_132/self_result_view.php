@@ -1,36 +1,36 @@
 <link rel="stylesheet" href="<?= $host_name ?>/public/css/sel_as_n_goal.css">
 <div class="content">
     <div class="content-header">
-        <h1 class="heading">self assessment | deadline submit: 2022-07-15 23:00:00</h1>
+        <h1 class="heading" id="heading">self assessment | deadline submit: 2022-07-15 23:00:00</h1>
     </div>
     <div class="content-body">
         <div class="per-ex">
             <div class="perform">
                 <h4>performance & development agreement</h4>
-                <p>last updated:</p>
+                <p id="last-update">last updated:</p>
             </div>
-            <a href="#" class="export">export PDF</a>
+            <a href="#" class="export" style="cursor: not-allowed;">export PDF</a>
         </div>
         <div class="user-info">
-            <p class="dark-60">tran chi dung - id: 1234</p>
+            <p class="dark-60"><?= $_SESSION['name'] ?> - id: <?= $_SESSION['id'] ?></p>
             <p class="dark-60">software engineer - data department</p>
             <p class="green">Appraiser: john willy</p>
         </div>
         <div class="button">
-            <button class="btn btn-submit">submit</button>
-            <button class="btn btn-save">save</button>
+            <button class="btn btn-submit" style="cursor: not-allowed;">submit</button>
+            <button class="btn btn-save" style="cursor: not-allowed;">save</button>
             <a href="<?= $host_name ?>/UC0131_132/myPAgoal">
                 <button class="btn btn-cancel">cancel</button>
             </a>
         </div>
         <div class="add-new">
             <div class="js-add-new">
-                <i class="fa-solid fa-circle-plus js-create"></i>
-                <span>add a new goal</span>
+                <i class="fa-solid fa-circle-plus js-create" style="cursor: not-allowed;"></i>
+                <span style="cursor: not-allowed;">add a new goal</span>
             </div>
             <div class="delete-line">
-                <button class="btn-delete js-del-re-all">delete</button>
-                <button class="delete-all">delete all</button>
+                <button class="btn-delete js-del-re-all" style="cursor: not-allowed;">delete</button>
+                <button class="delete-all" style="cursor: not-allowed;">delete all</button>
             </div>
         </div>
         <!-- <div class="nothing-content">

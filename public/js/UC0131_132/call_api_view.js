@@ -16,19 +16,52 @@ function call_api(){
       $.ajax(settings).done(function (response) {
         render_data(response.data);
         my_data = response.data;
+        console.log(response);
       });
+}
+
+function call_find_PA_GOAL(page){
+    var settings = {
+        "url": "http://127.0.0.1:5000/api/uc0131_132/get-pa-goals",
+        "method": "POST",
+        "timeout": 0,
+        "headers": {
+          "Content-Type": "application/json"
+        },
+        "data": JSON.stringify({
+          "page": `${page}`,
+          "employee_id": `${id_user}`,
+          "status": []
+        }),
+      };
+      
+      $.ajax(settings).done(function (response) {
+        var new_data = response.data;
+        for (var i = 0; i < new_data.length; i++) {
+            if (pa_goal_id == new_data[i].PAGOAL_ID){
+                update_view_PA_GOAL(new_data[i]);
+                break;
+            }else if (response.total_records == 5){
+                call_find_PA_GOAL(page + 1);
+            }
+        }
+      });
+}
+
+function update_view_PA_GOAL(info){
+    document.getElementById("heading").innerHTML = `self assessment | deadline submit: ${info.DEADLINE_PAGOAL}`;
+    document.getElementById("last-update").innerHTML = `<span style="color: black">last updated</span>: ${info.LASTUPDATE_DATE}`;
 }
 
 function render_data(my_data){
     var main_data = document.getElementById('detail-goal-name');
     main_data.innerHTML = "";
     for (let i = my_data.length - 1; i >= 0; i--){
-        console.log("hi")
         main_data.innerHTML += `
             <div class="goal-name">
                 <div class="goal-name-checkbox">
                     <input type="checkbox" name="" id="">
-                    <h4>${my_data[i].GOAL_NAME}</h4>
+                    <h4 style="width: calc(100% - 200px)">${my_data[i].GOAL_NAME}</h4>
                     <p class="pending">status: ${my_data[i].STATUS}</p>
                 </div>
                 <div class="time">
@@ -37,17 +70,13 @@ function render_data(my_data){
                 </div>
                 <div class="func">
                     <button onclick="showNewGoalCreate(${i})">see goal</button>
-                    <button class="edit-error">edit goal</button>
-                    <button class="js-del-re">delete goal</button>
+                    <button class="edit-error" style="cursor: not-allowed;>edit goal</button>
+                    <button class="js-del-re" style="cursor: not-allowed;>delete goal</button>
                 </div>
             </div>
         `;
     }
 }
-
-$(document).ready(function () {
-    call_api();
-});
 
 function edit_model(id){
     document.getElementById('model-view').innerHTML = `
@@ -100,3 +129,8 @@ function showNewGoalCreate (id) {
 function hideNewGoalCreate () {
     modal_new_goal.classList.remove('open')
 }
+
+$(document).ready(function () {
+    call_api();
+    call_find_PA_GOAL(0);
+});
