@@ -28,15 +28,15 @@
                 <i class="fa-solid fa-circle-plus js-create" style="cursor: not-allowed;"></i>
                 <span style="cursor: not-allowed;">add a new goal</span>
             </div>
-            <div class="delete-line">
+            <div class="delete-line" id="action-button">
                 <button class="btn-delete js-del-re-all" style="cursor: not-allowed;">delete</button>
                 <button class="delete-all" style="cursor: not-allowed;">delete all</button>
             </div>
         </div>
-        <!-- <div class="nothing-content">
+        <div class="nothing-content" id="nothing-content">
             <img src="<?= $host_name ?>/public/img/image/oh crap.png" width="300" height="210" alt="">
             <p>you don't have any goal. you can create a new one!</p>
-        </div> -->
+        </div>
     </div>
 
     <div class="goal-name-box" id="detail-goal-name">
@@ -44,7 +44,7 @@
     </div>
 </div>
 
-<div class="modal-new-goal js-modal-new-goal" id="model-view">
+<div class="modal-new-goal js-modal-view-goal" id="model-view">
     <div class="modal-contain js-modal-contain-new-goal">
         <h1>see a goal</h1>
         <div class="time">

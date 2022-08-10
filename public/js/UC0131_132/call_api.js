@@ -1,6 +1,7 @@
 var page = 0;
 var all_page = 0;
 var data_history = [];
+var limit_page = 2;
 
 function call_data_My_PA_Goal() {
 var settings = setting_ajax();
@@ -8,9 +9,13 @@ var settings = setting_ajax();
   $.ajax(settings).done(function (response) {
     console.log(response);
     data_history = response.data;
-    all_page = Math.ceil(response.total_records / 5);
-    page_check();
-    render_data(data_history);
+    if (data_history.length > 0) {
+      all_page = Math.ceil(response.total_records / limit_page);
+      page_check();
+      render_data(data_history);
+    }else{
+      null_data_My_PA_Goal();
+    }
   });
 }
 

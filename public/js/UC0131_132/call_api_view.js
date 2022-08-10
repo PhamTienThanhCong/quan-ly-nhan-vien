@@ -1,5 +1,5 @@
 var my_data = [];
-const modal_new_goal = document.querySelector('.js-modal-new-goal')
+const modal_view_goal = document.querySelector('.js-modal-view-goal')
 function call_api(){
     var settings = {
         "url": "http://127.0.0.1:5000/api/uc0131_132/get-pa-goal",
@@ -16,9 +16,25 @@ function call_api(){
       $.ajax(settings).done(function (response) {
         render_data(response.data);
         my_data = response.data;
+        if (my_data.length == 0){
+            no_data();
+        }else{
+            have_data();
+        }
         console.log(response);
       });
 }
+
+function no_data(){
+    document.getElementById("action-button").style.display = "none";
+    document.getElementById("nothing-content").style.display = "block";
+}
+
+function have_data(){
+    document.getElementById("action-button").style.display = "block";
+    document.getElementById("nothing-content").style.display = "none";
+}
+
 
 function call_find_PA_GOAL(page){
     var settings = {
@@ -123,11 +139,11 @@ function edit_model(id){
 
 function showNewGoalCreate (id) {
     edit_model(id);
-    modal_new_goal.classList.add('open')
+    modal_view_goal.classList.add('open')
 }
 
 function hideNewGoalCreate () {
-    modal_new_goal.classList.remove('open')
+    modal_view_goal.classList.remove('open')
 }
 
 $(document).ready(function () {

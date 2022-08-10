@@ -53,13 +53,13 @@
         <div class="header">
             <h4>history</h4>
             <div class="header-page">
-                <i onclick="change_page(-1)" class="fa-solid fa-angle-left"></i>
+                <i onclick="change_page(-1)" style="cursor:pointer" class="fa-solid fa-angle-left"></i>
                 <p>
                     <span id="current_page">1</span>
                     <span>/</span>
                     <span id="end_page">1</span>
                 </p>
-                <i onclick="change_page(1)" class="fa-solid fa-angle-right"></i>
+                <i onclick="change_page(1)" style="cursor:pointer" class="fa-solid fa-angle-right"></i>
             </div>
         </div>
         <table id="history">
@@ -78,6 +78,10 @@
             <tbody id="data-history">
             </tbody>
         </table>
+        <div class="nothing-content" style="margin-top: 20px; margin-left: 50%; transform: translateX(-30%);" id="nothing-content">
+            <img src="<?= $host_name ?>/public/img/image/oh crap.png" width="300" height="210" alt="">
+            <p>Couldn't find any records. You can search again</p>
+        </div>
     </div>
 </div>
 

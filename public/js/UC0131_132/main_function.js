@@ -18,8 +18,17 @@ function change_page(type){
         call_data_My_PA_Goal();
     }
 }
+
+function null_data_My_PA_Goal(){
+    document.getElementById("data-history").innerHTML = "";
+    document.getElementById("nothing-content").style.display = "block";
+    document.getElementById("current_page").textContent = `0`;
+    document.getElementById("end_page").textContent     = `0`;
+}
+
 function render_data(data){
     document.getElementById("data-history").innerHTML = "";
+    document.getElementById("nothing-content").style.display = "none";
     for(var i = 0 ; i < data.length ; i++){
         document.getElementById("data-history").innerHTML += `
             <tr>
@@ -83,7 +92,7 @@ function setting_ajax(){
     var my_url = `${uc0131_132}/get-pa-goals`;
     var settings
     settings = {
-        url: my_url,
+        url: "http://127.0.0.1:5000/api/uc0131_132/get-pa-goals",
         method: "POST",
         timeout: 0,
         headers: {
@@ -93,13 +102,14 @@ function setting_ajax(){
           employee_id: id_user,
           page: page,
           status: get_status(),
+          limit: limit_page
         }),
       };
     var date_update   = document.getElementById("date_update").value;
     var date_deadline = document.getElementById("date_deadline").value;
     if (date_update != ''){
         settings = {
-            url: my_url,
+            url: "http://127.0.0.1:5000/api/uc0131_132/get-pa-goals",
             method: "POST",
             timeout: 0,
             headers: {
@@ -115,7 +125,7 @@ function setting_ajax(){
     }
     if (date_deadline != 0){
         settings = {
-            url: my_url,
+            url: "http://127.0.0.1:5000/api/uc0131_132/get-pa-goals",
             method: "POST",
             timeout: 0,
             headers: {
@@ -131,7 +141,7 @@ function setting_ajax(){
     }
     if (date_deadline != '' && date_update != ''){
         settings = {
-            url: my_url,
+            url: "http://127.0.0.1:5000/api/uc0131_132/get-pa-goals",
             method: "POST",
             timeout: 0,
             headers: {
