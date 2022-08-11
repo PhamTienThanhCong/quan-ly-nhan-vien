@@ -124,11 +124,16 @@ function have_data(){
 }
 
 function formatDate(date) {
-    var d = new Date(date),
+    var new_date = date.split(' ');
+    var new_Date2 = "";
+    for (let i = 0; i < 4 ; i++){
+        new_Date2 += new_date[i] + ' ';
+    }
+    var d = new Date(new_Date2),
         month = '' + (d.getMonth() + 1),
         day = '' + d.getDate(),
         year = d.getFullYear();
-
+    
     if (month.length < 2) 
         month = '0' + month;
     if (day.length < 2) 
@@ -137,12 +142,18 @@ function formatDate(date) {
     return [year, month, day].join('-');
 }
 
+
 function formatDateShow(date) {
-    var d = new Date(date),
+    var new_date = date.split(' ');
+    var new_Date2 = "";
+    for (let i = 0; i < 4 ; i++){
+        new_Date2 += new_date[i] + ' ';
+    }
+    var d = new Date(new_Date2),
         month = '' + (d.getMonth() + 1),
         day = '' + d.getDate(),
         year = d.getFullYear();
-
+    
     if (month.length < 2) 
         month = '0' + month;
     if (day.length < 2) 

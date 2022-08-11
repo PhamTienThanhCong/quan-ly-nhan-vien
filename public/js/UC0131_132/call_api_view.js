@@ -36,7 +36,12 @@ function have_data(){
 }
 
 function formatDateShow(date) {
-    var d = new Date(date),
+    var new_date = date.split(' ');
+    var new_Date2 = "";
+    for (let i = 0; i < 4 ; i++){
+        new_Date2 += new_date[i] + ' ';
+    }
+    var d = new Date(new_Date2),
         month = '' + (d.getMonth() + 1),
         day = '' + d.getDate(),
         year = d.getFullYear();
