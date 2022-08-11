@@ -1,9 +1,12 @@
 function update_view_PA_GOAL(info){
-    document.getElementById("heading").innerHTML = `self assessment | deadline submit: ${info.DEADLINE_PAGOAL}`;
-    document.getElementById("last-update").innerHTML = `<span style="color: black">last updated</span>: ${info.LASTUPDATE_DATE}`;
+    document.getElementById("heading").innerHTML = `self assessment | deadline submit: ${formatDateShow(info.DEADLINE_PAGOAL)}`;
+    document.getElementById("last-update").innerHTML = `<span style="color: black">last updated</span>: ${formatDateShow(info.LASTUPDATE_DATE)}`;
     if (info.STATUS == "Pending"){
         document.getElementById("submit-btn").innerHTML = "UnSubmit";
         document.getElementById("submit-btn").onclick = showUnsubmitForm;
+    }else{
+        document.getElementById("submit-btn").innerHTML = "Submit";
+        document.getElementById("submit-btn").onclick = showSubmitRequest;
     }
 }
 
@@ -19,8 +22,8 @@ function render_data(my_data){
                     <p class="pending">status: ${my_data[i].STATUS}</p>
                 </div>
                 <div class="time">
-                    <p>due date: ${my_data[i].DUE_DATE}</p>
-                    <p>complete date: ${my_data[i].COMPLETED_DATE}</p>
+                    <p>due date: ${formatDateShow(my_data[i].DUE_DATE)}</p>
+                    <p>complete date: ${formatDateShow(my_data[i].COMPLETED_DATE)}</p>
                 </div>
                 <div class="func">
                     <button onclick="showNewGoalCreate(${i})">see goal</button>
@@ -39,11 +42,11 @@ function edit_model(id){
             <div class="time">
                 <div class="due-date">
                     <p>due date</p>
-                    <input type="text" name="" id="" value="${my_data[id].DUE_DATE}" readonly>
+                    <input type="text" name="" id="" value="${formatDateShow(my_data[id].DUE_DATE)}" readonly>
                 </div>
                 <div class="due-date">
                     <p>completed date</p>
-                    <input type="text" name="" id="" value="${my_data[id].COMPLETED_DATE}" readonly>
+                    <input type="text" name="" id="" value="${formatDateShow(my_data[id].COMPLETED_DATE)}" readonly>
                 </div>
                 <div class="select">
                     <p>status</p>
@@ -86,7 +89,7 @@ function set_current_day(){
         $('#due_date').val(new Date().toDateInputValue());
     });
     $(document).ready( function() {
-        $('#complete_date').val(new Date().toDateInputValue());
+        $('#complete_date').val("1970-01-01");
     });
 }
 
@@ -130,6 +133,20 @@ function formatDate(date) {
         day = '0' + day;
 
     return [year, month, day].join('-');
+}
+
+function formatDateShow(date) {
+    var d = new Date(date),
+        month = '' + (d.getMonth() + 1),
+        day = '' + d.getDate(),
+        year = d.getFullYear();
+
+    if (month.length < 2) 
+        month = '0' + month;
+    if (day.length < 2) 
+        day = '0' + day;
+
+    return `${[year, month, day].join('-')} ${date.split(' ')[4]}`;
 }
 
 function show_edit_modal(new_data){

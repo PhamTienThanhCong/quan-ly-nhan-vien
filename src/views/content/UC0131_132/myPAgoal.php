@@ -45,7 +45,7 @@
         </div>
 
         <div class="func-button">
-            <button onclick="call_data_My_PA_Goal()" class="btn">search</button>
+            <button onclick="search_data()" class="btn">search</button>
             <button onclick="reset_all()" class="btn">reset all</button>
         </div>
     </div>

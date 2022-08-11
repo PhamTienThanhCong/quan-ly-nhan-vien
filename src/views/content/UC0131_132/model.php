@@ -63,6 +63,22 @@
     </form>
 </div>
 
+<div class="modal-delete-re js-model-confirm-submit">
+    <div class="modal-contain js-modal-contain-re">
+        <div class="modal-header js-modal-header">
+            <p class="modal--heading">Submit PA Goal</p>
+            <div class="modal-close-delete-re js-modal-close-del-re">
+                <i onclick="hideSubmitRequest()" class="fa-solid fa-xmark"></i>
+            </div>
+        </div>
+        <div class="modal-content">
+            <p>Do you want to Submit this goal? This step cannot be undo</p>
+            <a href="#" onclick="choice_submit()" class="btn js-confirm">OK</a>
+            <a href="#" onclick="hideSubmitRequest()" class="btn js-cancel-btn">cancel</a>
+        </div>
+    </div>
+</div>
+
 <div class="modal-delete-re js-modal-del-re">
     <div class="modal-contain js-modal-contain-re">
         <div class="modal-header js-modal-header">

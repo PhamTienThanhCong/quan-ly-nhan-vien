@@ -12,8 +12,21 @@
     <img src="<?= $host_name ?>/public/img/image/overdue.png" height="300px" width="300px" alt="overdue" class="overdue"> -->
 </div>
 
-<script src="<?= $host_name ?>/public/js/UC0131_132/provi_fb.js"></script>
 <script>
+    function formatDateShow(date) {
+        var d = new Date(date),
+            month = '' + (d.getMonth() + 1),
+            day = '' + d.getDate(),
+            year = d.getFullYear();
+        
+        if (month.length < 2) 
+            month = '0' + month;
+        if (day.length < 2) 
+            day = '0' + day;
+
+        return `${[year, month, day].join('-')} ${date.split(' ')[4]}`;
+    }
+
     var my_data;
     function call_data_My_PA_Goal() {
         var my_url = `${uc0131_132}/get-pa-goals`;
@@ -43,7 +56,7 @@
         for(var i = 0; i < data.length; i++){
             if (year == data[i].DEADLINE_PAGOAL.split(' ')[3]){
                 document.getElementById("feedback-check").innerHTML = `
-                    <p style="text-transform: none;">You have the self-assessment's request from the manager with deadline is <span>${data[i].DEADLINE_PAGOAL}</span></p>
+                    <p style="text-transform: none;">You have the self-assessment's request from the manager with deadline is <span>${formatDateShow(data[i].DEADLINE_PAGOAL)}</span> </span></p>
                     <img src="<?= $host_name ?>/public/img/image/run_deadline.png" height="312px" width="438px" alt="">
                 `;
                 check = false;

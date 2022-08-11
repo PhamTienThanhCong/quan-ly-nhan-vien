@@ -4,6 +4,9 @@ function page_check(){
     if (page + 1 > all_page){
         page = all_page - 1;
     }
+    if (page < 0){
+        page = 0;
+    }
     document.getElementById("current_page").textContent = `${page + 1}`;
     document.getElementById("end_page").textContent     = `${all_page}`;
 }
@@ -17,6 +20,11 @@ function change_page(type){
     if (call){
         call_data_My_PA_Goal();
     }
+}
+
+function search_data(){
+    page = 0;
+    call_data_My_PA_Goal();
 }
 
 function null_data_My_PA_Goal(){
@@ -34,11 +42,11 @@ function render_data(data){
             <tr>
                 <td>${data[i].PAGOAL_ID}</td>
                 <td>${data[i].TOTAL_GOALS}</td>
-                <td>${data[i].DEADLINE_PAGOAL}</td>
-                <td>${data[i].LASTUPDATE_DATE}</td>
+                <td>${formatDateShow(data[i].DEADLINE_PAGOAL)}</td>
+                <td>${formatDateShow(data[i].LASTUPDATE_DATE)}</td>
                 <td class="${data[i].STATUS}">${data[i].STATUS}</td>
                 <td>${data[i].MANAGER_ID}</td>
-                <td>${data[i].UNSUBMIT_REASON}</td>
+                <td>${data[i].MANAGER_COMMENT}</td>
                 <td class="action-area">
                     <a href="${host_name}/UC0131_132/self_result_view/${data[i].PAGOAL_ID}">
                         <i class="fa-solid fa-eye"></i>
@@ -120,6 +128,7 @@ function setting_ajax(){
               page: page,
               status: get_status(),
               last_update: date_update,
+              limit: limit_page
             }),
           };
     }
@@ -136,6 +145,7 @@ function setting_ajax(){
               page: page,
               status: get_status(),
               deadline: date_deadline,
+              limit: limit_page
             }),
           };
     }
@@ -153,6 +163,7 @@ function setting_ajax(){
               status: get_status(),
               last_update: date_update,
               deadline: date_deadline,
+              limit: limit_page
             }),
           };
     }
@@ -168,16 +179,17 @@ function reset_all(){
 }
 
 function edit_PA(url, status, deadline){
+
     var date_now = new Date().toLocaleString();
     var check = true;
     if (status == "Pending" || status == "Draft"){
-        
+        check = true;
     }else{
         check = false;
         showError("You cannot edit your PA Goal Form anymore because your PA Goal Form’s status is not Pending or Draft");
     }
-    if (deadline < date_now){
-        next = false;
+    if (formatDate(new Date()) > formatDate(deadline)){
+        check = false;
         showError("You cannot edit your PA Goal Form anymore because time for your Self-Assessment request is overdue");
     }
     if (check){
@@ -193,4 +205,32 @@ function showError (content) {
 
 function hideError () {
     modal_edit_eror.classList.remove('open')
+}
+
+function formatDate(date) {
+    var d = new Date(date),
+        month = '' + (d.getMonth() + 1),
+        day = '' + d.getDate(),
+        year = d.getFullYear();
+    
+    if (month.length < 2) 
+        month = '0' + month;
+    if (day.length < 2) 
+        day = '0' + day;
+
+    return [year, month, day].join('/');
+}
+
+function formatDateShow(date) {
+    var d = new Date(date),
+        month = '' + (d.getMonth() + 1),
+        day = '' + d.getDate(),
+        year = d.getFullYear();
+    
+    if (month.length < 2) 
+        month = '0' + month;
+    if (day.length < 2) 
+        day = '0' + day;
+
+    return `${[year, month, day].join('-')} ${date.split(' ')[4]}`;
 }

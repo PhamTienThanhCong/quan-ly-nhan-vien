@@ -1,11 +1,11 @@
 var page = 0;
 var all_page = 0;
 var data_history = [];
-var limit_page = 2;
+var limit_page = 5;
 
 function call_data_My_PA_Goal() {
-var settings = setting_ajax();
-
+  var settings = setting_ajax();
+  console.log(page)
   $.ajax(settings).done(function (response) {
     console.log(response);
     data_history = response.data;

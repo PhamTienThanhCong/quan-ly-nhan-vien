@@ -89,7 +89,7 @@ document.getElementById("modal-create-new-goal").addEventListener("submit", func
     if (document.getElementById(`due_date`).value >= datetime || document.getElementById(`complete_date`).datetime >= datetime){
         check = true;
     }else{
-        showError("due date or complete date can't < now");
+        showError("due date must be big now");
     }
     if (check){
         var settings = {
@@ -102,7 +102,6 @@ document.getElementById("modal-create-new-goal").addEventListener("submit", func
             "data": JSON.stringify({
                 "pa_goal_id" : `${pa_goal_id}`,
                 "due_date" : document.getElementById("due_date").value,
-                "complete_date" : document.getElementById("complete_date").value,
                 "status" : document.getElementById("status").value,
                 "name" : document.getElementById("name").value,
                 "action" : document.getElementById("action").value,
@@ -124,10 +123,10 @@ document.getElementById("edit-modal-create-new-goal").addEventListener("submit",
     var check = false;
     var datetime = new Date().toISOString().split('T')[0];
 
-    if (document.getElementById(`due_date`).value >= datetime || document.getElementById(`complete_date`).datetime >= datetime){
+    if (document.getElementById(`due_date`).value >= datetime){
         check = true;
     }else{
-        showError("due date or complete date can't < now");
+        showError("due date must be big now");
     }
     if (check){
         var settings = {
@@ -141,7 +140,6 @@ document.getElementById("edit-modal-create-new-goal").addEventListener("submit",
                 "pa_goal_id" : `${pa_goal_id}`,
                 "pa_goal_detail_id": document.getElementById("edit-id_goal_detail").value,
                 "due_date" : document.getElementById("edit-due_date").value,
-                "complete_date" : document.getElementById("edit-complete_date").value,
                 "status" : document.getElementById("edit-status").value,
                 "name" : document.getElementById("edit-name").value,
                 "action" : document.getElementById("edit-action").value,
@@ -195,6 +193,25 @@ function get_new_goal_detail(id_goal){
         show_edit_modal(response.data[0]);
         console.log(response.data[0])
       });
+}
+
+function change_status(){
+    
+    var settings = {
+        "url": "http://127.0.0.1:5000/api/uc0131_132/change-status",
+        "method": "POST",
+        "timeout": 0,
+        "headers": {
+        "Content-Type": "application/json"
+        },
+        "data": JSON.stringify({
+            "pa_goal_id" : `${pa_goal_id}`,
+            "status"     : "Draft",
+        }),
+    };
+    $.ajax(settings).done(function (response) {
+        call_find_PA_GOAL(0);
+    });
 }
 
 $(document).ready(function () {

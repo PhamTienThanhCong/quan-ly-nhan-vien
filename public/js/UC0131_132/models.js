@@ -5,6 +5,21 @@ const modal_del_re = document.querySelector('.js-modal-del-re')
 const modal_del_co = document.querySelector('.js-modal-del-co')
 const modal_del_re_all = document.querySelector('.js-modal-del-re-all')
 const modal_del_co_all = document.querySelector('.js-modal-del-co-all')
+const modal_submit    = document.querySelector('.js-model-confirm-submit')
+
+function showSubmitRequest(){
+    modal_submit.classList.add('open');
+}
+
+function hideSubmitRequest(){
+    modal_submit.classList.remove('open');
+}
+
+function choice_submit(){
+    change_status();
+    hideSubmitRequest();
+    showConfOftions("submit successfully", "Your manuscript has been successfully changed to pending");
+}
 
 function showNewGoalCreate (id) {
     edit_model(id);
