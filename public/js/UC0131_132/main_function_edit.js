@@ -50,8 +50,9 @@ function edit_model(id){
                 </div>
                 <div class="select">
                     <p>status</p>
-                    <select name="" id="" readonly>
-                        <option value=""">${my_data[id].STATUS}</"option>
+                    <select name="" id="view-status" readonly>
+                        <option value="Processing">Processing</option>
+                        <option value="Completed">Completed</option>
                     </select>
                 </div>
             </div>
@@ -76,6 +77,7 @@ function edit_model(id){
             </div>
         </div>
     `;
+    document.getElementById('view-status').value = my_data[id].STATUS;
 }
 
 Date.prototype.toDateInputValue = (function() {
@@ -166,6 +168,7 @@ function show_edit_modal(new_data){
                 <p>status</p>
                 <select name="status" id="edit-status">
                     <option value="Processing">Processing</option>
+                    <option value="Completed">Completed</option>
                 </select>
             </div>
         </div>
@@ -195,5 +198,6 @@ function show_edit_modal(new_data){
             <p>save your goal successfully!</p>
         </div>
     `;
-    $('.js-modal-edit-goal')[0].classList.add('open')
+    $('.js-modal-edit-goal')[0].classList.add('open');
+    document.getElementById('edit-status').value = new_data.STATUS;
 }

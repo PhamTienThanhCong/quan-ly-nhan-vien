@@ -18,7 +18,6 @@
         </div>
         <div class="button">
             <button id="submit-btn" class="btn btn-submit">submit</button>
-            <button id="save-btn" class="btn btn-save">save</button>
             <a href="<?= $host_name ?>/UC0131_132/myPAgoal">
                 <button class="btn btn-cancel">cancel</button>
             </a>

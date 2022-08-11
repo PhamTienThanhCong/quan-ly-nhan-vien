@@ -8,7 +8,11 @@ const modal_del_co_all = document.querySelector('.js-modal-del-co-all')
 const modal_submit    = document.querySelector('.js-model-confirm-submit')
 
 function showSubmitRequest(){
-    modal_submit.classList.add('open');
+    if (my_data.length == 0){
+        showError("You need at least 1 record to submit");
+    }else{
+        modal_submit.classList.add('open');
+    }
 }
 
 function hideSubmitRequest(){

@@ -19,6 +19,7 @@
                 <p>status</p>
                 <select name="status" id="status">
                     <option value="Processing">Processing</option>
+                    <option value="Completed">Completed</option>
                 </select>
             </div>
         </div>

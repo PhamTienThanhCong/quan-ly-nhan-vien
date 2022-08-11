@@ -102,6 +102,7 @@ document.getElementById("modal-create-new-goal").addEventListener("submit", func
             "data": JSON.stringify({
                 "pa_goal_id" : `${pa_goal_id}`,
                 "due_date" : document.getElementById("due_date").value,
+                "complete_date" : document.getElementById("complete_date").value,
                 "status" : document.getElementById("status").value,
                 "name" : document.getElementById("name").value,
                 "action" : document.getElementById("action").value,
@@ -140,6 +141,7 @@ document.getElementById("edit-modal-create-new-goal").addEventListener("submit",
                 "pa_goal_id" : `${pa_goal_id}`,
                 "pa_goal_detail_id": document.getElementById("edit-id_goal_detail").value,
                 "due_date" : document.getElementById("edit-due_date").value,
+                "complete_date" : document.getElementById("edit-complete_date").value,
                 "status" : document.getElementById("edit-status").value,
                 "name" : document.getElementById("edit-name").value,
                 "action" : document.getElementById("edit-action").value,
@@ -206,7 +208,7 @@ function change_status(){
         },
         "data": JSON.stringify({
             "pa_goal_id" : `${pa_goal_id}`,
-            "status"     : "Draft",
+            "status"     : "Pending",
         }),
     };
     $.ajax(settings).done(function (response) {
