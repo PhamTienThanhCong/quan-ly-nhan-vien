@@ -20,6 +20,7 @@ function hideSubmitRequest(){
 }
 
 function choice_submit(){
+    get_email_admin();
     change_status();
     hideSubmitRequest();
     showConfOftions("submit successfully", "Your manuscript has been successfully changed to pending");

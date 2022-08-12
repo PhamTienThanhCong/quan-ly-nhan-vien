@@ -221,3 +221,35 @@ $(document).ready(function () {
     call_find_PA_GOAL(0);
     set_current_day();
 });
+
+function get_email_admin(){
+    var my_url = `${host_name}/api_auth/get_user/${my_data[0].MANAGER_ID}`;
+    $.ajax({
+        type: "GET",
+        url: my_url,
+        dataType: "json",
+        success: function (response) {
+            send_mail_admin(response.data.EMAIL, id_user, name_employee);
+        }
+    });
+}
+
+function send_mail_admin(manager_email, id_employee, name_employee) {
+    var settings = {
+        "url": "http://127.0.0.1:5000/api/uc0131_132/send-email",
+        "method": "POST",
+        "timeout": 0,
+        "headers": {
+          "Content-Type": "application/json"
+        },
+        "data": JSON.stringify({
+          "employee_id": id_employee.toString(),
+          "employee_name": name_employee,
+          "manager_email": manager_email
+        }),
+      };
+      
+      $.ajax(settings).done(function (response) {
+        console.log(response);
+      });
+}
